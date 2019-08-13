@@ -5,7 +5,20 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/basicColor</item>
+    </style>
+
+    <style name="FzuGangEditText" parent="QMUI.Compat">
+        <item name="colorControlActivated">@color/basicColor</item>
+        <item name="colorControlNormal">@color/qmui_config_color_pure_black</item>
+    </style>
+
+    <style name="LaunchTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@drawable/logo_name</item>
     </style>
 
 </resources>

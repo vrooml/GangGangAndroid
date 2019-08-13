@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 
 public class WelcomeActivity extends AppCompatActivity{
@@ -14,9 +15,10 @@ public class WelcomeActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        //根据hasLogin判断之前是否登录过决定下一启动活动
-        if(SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"loginStatus").equals("false")){
-            this.runOnUiThread(new Runnable() {
+        //判断之前是否登录过决定下一页面
+        if(SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token")==null||
+                SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token").equals("false")){
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -24,30 +26,40 @@ public class WelcomeActivity extends AppCompatActivity{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    WelcomeActivity.this.finish();
-                    Intent intent=new Intent(WelcomeActivity.this,LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    WelcomeActivity.this.startActivity(intent);
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run(){
+                            Intent intent=new Intent(WelcomeActivity.this,LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            WelcomeActivity.this.finish();
+                        }
+                    });
                 }
-            });
-        }
-        else {
-            this.runOnUiThread(new Runnable() {
+            }).start();
+
+
+        }else{
+            new Thread(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    WelcomeActivity.this.finish();
-                    Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    WelcomeActivity.this.startActivity(intent);
-
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run(){
+                            Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            WelcomeActivity.this.finish();
+                        }
+                    });
                 }
-            });
-        }
+            }).start();
 
+        }
     }
 }
