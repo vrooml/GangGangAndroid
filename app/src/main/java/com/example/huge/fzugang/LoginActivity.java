@@ -11,6 +11,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
+import com.example.huge.fzugang.Utils.BarcolorUtil;
 import com.example.huge.fzugang.Utils.FzuGangTextWatcher;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
@@ -34,10 +35,10 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
-        Init();
+        init();
     }
 
-    private void Init(){
+    private void init(){
         //先让按钮失效
         loginButton.setEnabled(false);
         //设置文本框改变监听
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity{
                 }else if(passwordEdit.getText().length()<6||passwordEdit.getText().length()>12){
                     Toast.makeText(LoginActivity.this,"密码在6-12位之间",Toast.LENGTH_SHORT).show();
                 }else{
-                    RetrofitUtil.postLogin(phoneNumEdit.getText().toString(),passwordEdit.getText().toString());//发送登录请求
+//                    RetrofitUtil.postLogin(phoneNumEdit.getText().toString(),passwordEdit.getText().toString());//发送登录请求
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();

@@ -5,6 +5,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".WelcomeActivity"
-        android:background="@drawable/logo_name">
+        android:background="@mipmap/logo_name">
 
 </android.support.constraint.ConstraintLayout>

@@ -14,9 +14,10 @@
             android:label="Fzu帮"
             android:roundIcon="@drawable/logo"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:largeHeap="true"
+            android:hardwareAccelerated="false">
         <activity android:name=".WelcomeActivity"
-                  android:theme="@style/LaunchTheme"
                   android:icon="@drawable/logo"
                   android:label="Fzu帮"
                   android:roundIcon="@drawable/logo">

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
+import com.example.huge.fzugang.Utils.BarcolorUtil;
 import com.example.huge.fzugang.Utils.FzuGangTextWatcher;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
@@ -31,10 +32,10 @@ public class RegisterActivity extends AppCompatActivity{
         setContentView(R.layout.activity_register);
 
         ButterKnife.bind(this);
-        Init();
+        init();
     }
 
-    private void Init(){
+    private void init(){
         //先让按钮失效
         registerButton.setEnabled(false);
         //设置文本框改变监听

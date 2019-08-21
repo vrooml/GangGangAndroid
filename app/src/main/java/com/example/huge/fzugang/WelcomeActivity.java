@@ -15,6 +15,10 @@ public class WelcomeActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        init();
+    }
+
+    private void init(){
         //判断之前是否登录过决定下一页面
         if(SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token")==null||
                 SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token").equals("false")){
