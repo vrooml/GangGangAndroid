@@ -2,69 +2,187 @@ package com.example.huge.fzugang;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.RetrofitStuff.AuthCodeRequest;
+import com.example.huge.fzugang.RetrofitStuff.ForgetPasswordRequest;
+import com.example.huge.fzugang.RetrofitStuff.RegisterRequest;
 import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.BarcolorUtil;
-import com.example.huge.fzugang.Utils.FzuGangTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.LoadingdialogUtil;
+import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
+import com.zyao89.view.zloading.ZLoadingDialog;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class ForgetPasswordActivity extends AppCompatActivity{
     @BindView(R.id.forget_confirm_button)
     QMUIRoundButton forgetConfirmButton;
     @BindView(R.id.forget_phonenum_edit)
-    EditText forgetPhonenumEdit;
+    TextInputLayout forgetPhonenumEdit;
     @BindView(R.id.forget_send_authcode_button)
     QMUIRoundButton forgetSendCodeButton;
     @BindView(R.id.forget_authcode_edit)
-    EditText forgetCodeEdit;
+    TextInputLayout forgetCodeEdit;
     @BindView(R.id.forget_password_edit)
-    EditText forgetPasswordEdit;
+    TextInputLayout forgetPasswordEdit;
     @BindView(R.id.forget_confirm_password_edit)
-    EditText forgetConfirmPasswordEdit;
+    TextInputLayout forgetConfirmPasswordEdit;
+
+    private Boolean correctPhone;
+    private Boolean correctCode;
+    private Boolean correctPassword;
+    private Boolean correctConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-
         ButterKnife.bind(this);
         init();
     }
 
     private void init(){
+        correctPhone=false;
+        correctCode=false;
+        correctPassword=false;
+        correctConfirmPassword=false;
         //先让按钮失效
         forgetConfirmButton.setEnabled(false);
         //设置文本框改变监听
-        forgetPhonenumEdit.addTextChangedListener(new FzuGangTextWatcher(this,forgetConfirmButton,forgetPhonenumEdit,forgetCodeEdit,forgetPasswordEdit,forgetConfirmPasswordEdit));
-        forgetCodeEdit.addTextChangedListener(new FzuGangTextWatcher(this,forgetConfirmButton,forgetPhonenumEdit,forgetCodeEdit,forgetPasswordEdit,forgetConfirmPasswordEdit));
-        forgetPasswordEdit.addTextChangedListener(new FzuGangTextWatcher(this,forgetConfirmButton,forgetPhonenumEdit,forgetCodeEdit,forgetPasswordEdit,forgetConfirmPasswordEdit));
-        forgetConfirmPasswordEdit.addTextChangedListener(new FzuGangTextWatcher(this,forgetConfirmButton,forgetPhonenumEdit,forgetCodeEdit,forgetPasswordEdit,forgetConfirmPasswordEdit));
+        forgetPhonenumEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(forgetPhonenumEdit.getEditText().getText().length()!=11){
+                    forgetPhonenumEdit.setError("手机号长度不正确");
+                    forgetPhonenumEdit.setErrorEnabled(true);
+                }else if(forgetPhonenumEdit.getEditText().getText().length()==0){
+                    forgetPhonenumEdit.setError("手机号不能为空");
+                    forgetPhonenumEdit.setErrorEnabled(true);
+                }else{
+                    correctPhone=true;
+                }
+                if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
+                    forgetConfirmButton.setEnabled(true);
+                }else{
+                    forgetConfirmButton.setEnabled(false);
+                }
+            }
+        });
+
+        forgetCodeEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(forgetCodeEdit.getEditText().getText().length()==0){
+                    forgetCodeEdit.setError("验证码不能为空");
+                    forgetCodeEdit.setErrorEnabled(true);
+                }else{
+                    correctCode=true;
+                }
+                if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
+                    forgetConfirmButton.setEnabled(true);
+                }else{
+                    forgetConfirmButton.setEnabled(false);
+                }
+            }
+        });
+
+        forgetPasswordEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(!checkPassword(forgetPasswordEdit)){
+                    forgetPasswordEdit.setError("密码须由字母、数字组成，可使用下划线");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else if(forgetPasswordEdit.getEditText().getText().length()<6||forgetPasswordEdit.getEditText().getText().length()>12){
+                    forgetPasswordEdit.setError("密码在6-12位之间");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else if(forgetPasswordEdit.getEditText().getText().length()==0){
+                    forgetPasswordEdit.setError("密码不能为空");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else{
+                    correctPassword=true;
+                }
+                if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
+                    forgetConfirmButton.setEnabled(true);
+                }else{
+                    forgetConfirmButton.setEnabled(false);
+                }
+            }
+        });
+
+        forgetConfirmPasswordEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(!checkPassword(forgetPasswordEdit)){
+                    forgetPasswordEdit.setError("密码须由字母、数字组成，可使用下划线");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else if(forgetPasswordEdit.getEditText().getText().length()<6||forgetPasswordEdit.getEditText().getText().length()>12){
+                    forgetPasswordEdit.setError("密码在6-12位之间");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else if(!forgetPasswordEdit.getEditText().getText().toString().equals(forgetConfirmPasswordEdit.getEditText().getText().toString())){
+                    forgetPasswordEdit.setError("两次输入密码不一致，请检查");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else if(forgetPasswordEdit.getEditText().getText().length()==0){
+                    forgetPasswordEdit.setError("密码不能为空");
+                    forgetPasswordEdit.setErrorEnabled(true);
+                }else{
+                    correctConfirmPassword=true;
+                }
+                if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
+                    forgetConfirmButton.setEnabled(true);
+                }else{
+                    forgetConfirmButton.setEnabled(false);
+                }
+            }
+        });
 
         //设置确认键监听
         forgetConfirmButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(forgetPhonenumEdit.getText().length()!=11){
-                    Toast.makeText(ForgetPasswordActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
-                }else if(forgetCodeEdit.getText().length()<6||forgetCodeEdit.getText().length()>12){
-                    Toast.makeText(ForgetPasswordActivity.this,"密码在6-12位之间",Toast.LENGTH_SHORT).show();
-                }else if(!forgetPasswordEdit.getText().toString().equals(forgetConfirmPasswordEdit.getText().toString())){
-                    Toast.makeText(ForgetPasswordActivity.this,"两次输入密码不一致，请检查",Toast.LENGTH_SHORT).show();
-                }else if(!checkPassword()){
-                    Toast.makeText(ForgetPasswordActivity.this,"密码须由字母、数字组成，可使用下划线",Toast.LENGTH_SHORT).show();
-                }else{
-//                    RetrofitUtil.postResetPassWord(forgetPhonenumEdit.getText().toString(),forgetCodeEdit.getText().toString());//发送登录请求
-                    Intent intent=new Intent(ForgetPasswordActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    ForgetPasswordActivity.this.finish();
-                }
+                ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(ForgetPasswordActivity.this);
+                ForgetPasswordRequest forgetPasswordRequest=new ForgetPasswordRequest(
+                        SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"authCodeToken")
+                        ,forgetPhonenumEdit.getEditText().getText().toString()
+                        ,forgetPasswordEdit.getEditText().getText().toString()
+                        ,forgetCodeEdit.getEditText().getText().toString());
+                RetrofitUtil.postForgetPassWord(ForgetPasswordActivity.this,forgetPasswordRequest,zLoadingDialog);//发送修改密码请求
             }
         });
 
@@ -87,21 +205,28 @@ public class ForgetPasswordActivity extends AppCompatActivity{
         forgetSendCodeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(forgetPhonenumEdit.getText().length()!=11){
+                if(forgetPhonenumEdit.getEditText().getText().length()!=11){
                     Toast.makeText(ForgetPasswordActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
                 }else{
-//                    RetrofitUtil.postForgetCode();
+                    String codeMsg=null;
+                    try{
+                        codeMsg=URLEncoder.encode("修改密码","utf-8");
+                    }catch(UnsupportedEncodingException e){
+                        e.printStackTrace();
+                    }
+                    AuthCodeRequest authCodeRequest=new AuthCodeRequest(forgetPhonenumEdit.getEditText().getText().toString(),codeMsg);
+                    RetrofitUtil.postAuthCode(authCodeRequest);
                     mCountDownTimer.start();
                 }
             }
         });
     }
 
-    private boolean checkPassword(){
+    private boolean checkPassword(TextInputLayout textInputLayout){
         boolean isDigit=false;
         boolean isAlpha=false;
         boolean isRight=true;
-        String password=forgetPasswordEdit.getText().toString();
+        String password=textInputLayout.getEditText().getText().toString();
         for(int i=0;i<password.length();i++){
             if(password.charAt(i)>='a'&&password.charAt(i)<='z'||password.charAt(i)>='A'&&password.charAt(i)<='Z'){
                 isAlpha=true;

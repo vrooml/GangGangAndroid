@@ -7,29 +7,84 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
+import com.example.huge.fzugang.RetrofitStuff.TradeListRequest;
+import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.zyao89.view.zloading.ZLoadingDialog;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import java.util.ArrayList;
+
 public class TradeFragment extends Fragment{
+    TextView title;
+    @BindView(R.id.trade_refresh_layout)
+    RefreshLayout refreshLayout;
+    @BindView(R.id.trade_list_view)
+    ListView tradeListView;
+    TradeListAdapter tradeListAdapter;
+    public static ArrayList<TradeInfo> tradeData;
+    public static ZLoadingDialog zLoadingDialog;
+    public static int page;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_trade, container, false);
+    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
+        View view=inflater.inflate(R.layout.fragment_trade,container,false);
+        ButterKnife.bind(this,view);
 
+        init();
+        initRefresh();
         return view;
     }
 
+    private void init(){
+//        TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),1,10);
+//        RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
+
+        title=getActivity().findViewById(R.id.block_title);
+        title.setText("二手交易");
+        tradeListAdapter=new TradeListAdapter(this.getContext(),tradeData);
+        tradeListView.setAdapter(tradeListAdapter);
+
+    }
+
+    private void initRefresh(){
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+//                tradeData.clear();
+                page=1;
+                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),1,10);
+                RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
+                tradeListAdapter.notifyDataSetChanged();
+                refreshlayout.finishRefresh(5000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),++page,10);
+                RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
+                tradeListAdapter.notifyDataSetChanged();
+                refreshlayout.finishLoadMore(5000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
     @Override
-    public void onDestroyView() {
+    public void onDestroyView(){
         super.onDestroyView();
     }
 }

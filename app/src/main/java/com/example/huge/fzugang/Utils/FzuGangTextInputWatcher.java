@@ -6,19 +6,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import com.example.huge.fzugang.R;
 
-public class FzuGangTextWatcher implements TextWatcher{
+public class FzuGangTextInputWatcher implements TextWatcher{
 
     private Context context;
     private Button button;
-    private EditText[] editTexts;
+    private TextInputLayout[] textInputLayouts;
 
-    public FzuGangTextWatcher(Context context,Button button,EditText... editTexts){
+    public FzuGangTextInputWatcher(Context context,Button button,TextInputLayout... textInputLayouts){
         this.context=context;
         this.button=button;
-        this.editTexts=editTexts;
+        this.textInputLayouts=textInputLayouts;
     }
 
     @Override
@@ -32,16 +30,23 @@ public class FzuGangTextWatcher implements TextWatcher{
     @Override
     public void afterTextChanged(Editable s){
         boolean enabled=true;
-        for(EditText i:editTexts){
-            if(i.getText().toString().length()==0){
+        for(TextInputLayout i: textInputLayouts){
+            if(i.getEditText().getText().toString().length()==0){
                 button.setEnabled(false);
                 enabled=false;
+                i.setError("请输入内容");
+                i.setErrorEnabled(true);
+            }else{
+                i.setErrorEnabled(false);
             }
         }
+
         if(enabled){
             button.setEnabled(true);
         }else{
             button.setEnabled(false);
         }
     }
+
+
 }

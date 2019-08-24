@@ -1,8 +1,11 @@
 package com.example.huge.fzugang;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -10,24 +13,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.RetrofitStuff.LoginRequest;
 import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.BarcolorUtil;
-import com.example.huge.fzugang.Utils.FzuGangTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
+import com.zyao89.view.zloading.ZLoadingDialog;
 
 public class LoginActivity extends AppCompatActivity{
     @BindView(R.id.login_phonenum_edit)
-    EditText phoneNumEdit;
+    TextInputLayout phoneNumEdit;
     @BindView(R.id.login_password_edit)
-    EditText passwordEdit;
+    TextInputLayout passwordEdit;
     @BindView(R.id.login_button)
     QMUIRoundButton loginButton;
     @BindView(R.id.forget_password_btn)
     TextView forgetPassButton;
     @BindView(R.id.register_entrance_btn)
     TextView registerButton;
-
+    ZLoadingDialog zLoadingDialog;
     private long firstClickTime;//记录退出点击时间
+    private boolean correctPhone;
+    private boolean correctPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -42,22 +50,62 @@ public class LoginActivity extends AppCompatActivity{
         //先让按钮失效
         loginButton.setEnabled(false);
         //设置文本框改变监听
-        phoneNumEdit.addTextChangedListener(new FzuGangTextWatcher(this,loginButton,phoneNumEdit,passwordEdit));
-        passwordEdit.addTextChangedListener(new FzuGangTextWatcher(this,loginButton,phoneNumEdit,passwordEdit));
+        phoneNumEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(phoneNumEdit.getEditText().getText().length()!=11){
+                    phoneNumEdit.setError("手机号长度不正确");
+                    phoneNumEdit.setErrorEnabled(true);
+                }else if(phoneNumEdit.getEditText().getText().length()==0){
+                    phoneNumEdit.setError("手机号不能为空");
+                    phoneNumEdit.setErrorEnabled(true);
+                }else{
+                    correctPhone=true;
+                }
+                if(correctPhone&&correctPassword){
+                    loginButton.setEnabled(true);
+                }else{
+                    loginButton.setEnabled(false);
+                }
+            }
+        });
+
+        passwordEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(passwordEdit.getEditText().getText().length()==0){
+                    passwordEdit.setError("密码不能为空");
+                    passwordEdit.setErrorEnabled(true);
+                }else{
+                    correctPassword=true;
+                }
+                if(correctPhone&&correctPassword){
+                    loginButton.setEnabled(true);
+                }else{
+                    loginButton.setEnabled(false);
+                }
+            }
+        });
+
         //设置其他监听
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(phoneNumEdit.getText().length()!=11){
-                    Toast.makeText(LoginActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
-                }else if(passwordEdit.getText().length()<6||passwordEdit.getText().length()>12){
-                    Toast.makeText(LoginActivity.this,"密码在6-12位之间",Toast.LENGTH_SHORT).show();
-                }else{
-//                    RetrofitUtil.postLogin(phoneNumEdit.getText().toString(),passwordEdit.getText().toString());//发送登录请求
-                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
-                }
+                zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(LoginActivity.this);
+                LoginRequest loginRequest=new LoginRequest(phoneNumEdit.getEditText().getText().toString(),passwordEdit.getEditText().getText().toString());
+                RetrofitUtil.postLogin(LoginActivity.this,loginRequest,zLoadingDialog);//发送登录请求
             }
         });
 

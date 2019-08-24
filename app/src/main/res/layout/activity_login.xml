@@ -41,32 +41,49 @@
                 android:layout_marginBottom="4dp"/>
     </android.support.constraint.ConstraintLayout>
 
-    <RelativeLayout
+    <LinearLayout
             android:id="@+id/login_mid_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginTop="40sp"
             android:layout_below="@id/login_top_view">
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_phonenum_edit"
-                android:hint="手机号"
-                android:layout_marginLeft="30sp"
-                android:layout_marginRight="30sp"
-                android:theme="@style/FzuGangEditText"/>
 
-        <EditText
-                android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/login_phonenum_edit"
+                app:errorEnabled="true"
                 android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="手机号"
+                    android:layout_marginLeft="30sp"
+                    android:layout_marginRight="30sp"
+                    android:theme="@style/FzuGangEditText"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
                 android:id="@+id/login_password_edit"
-                android:hint="密码"
-                android:inputType="textPassword"
-                android:layout_below="@id/login_phonenum_edit"
-                android:layout_marginLeft="30sp"
-                android:layout_marginRight="30sp"
-                android:layout_marginTop="25sp"
-                android:theme="@style/FzuGangEditText"/>
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="密码"
+                    android:inputType="textPassword"
+                    android:layout_below="@id/login_phonenum_edit"
+                    android:layout_marginLeft="30sp"
+                    android:layout_marginRight="30sp"
+                    android:layout_marginTop="25sp"
+                    android:theme="@style/FzuGangEditText"/>
+        </android.support.design.widget.TextInputLayout>
+
+
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                 android:layout_width="match_parent"
@@ -75,11 +92,10 @@
                 android:text="登录"
                 android:textSize="15sp"
                 app:qmui_radius="10sp"
-                android:layout_below="@id/login_password_edit"
                 android:layout_marginLeft="32sp"
                 android:layout_marginRight="32sp"
                 android:layout_marginTop="35sp"/>
-    </RelativeLayout>
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
             android:id="@+id/login_buttom_view"

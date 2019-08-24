@@ -3,12 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/delivery_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="I am Delivery"
-            android:textSize="30sp" />
+            android:background="@color/qmui_config_color_white"
+            app:srlPrimaryColor="@color/basicColor"
+            app:srlAccentColor="@android:color/white"
+            app:srlEnablePreviewInEditMode="true">
+
+        <com.scwang.smartrefresh.header.DeliveryHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <ListView
+                android:id="@+id/delivery_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 </RelativeLayout>

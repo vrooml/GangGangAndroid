@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.example.huge.fzugang">
-
     <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 允许应用程序联网，以便向我们的服务器端发送数据 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 允许应用程序联网，以便向我们的服务器端发送数据 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+            xmlns:tools="http://schemas.android.com/tools"
+            android:name=".MyApplication"
             android:allowBackup="true"
+            android:hardwareAccelerated="false"
             android:icon="@drawable/logo"
             android:label="Fzu帮"
+            android:largeHeap="true"
             android:roundIcon="@drawable/logo"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:largeHeap="true"
-            android:hardwareAccelerated="false">
-        <activity android:name=".WelcomeActivity"
-                  android:icon="@drawable/logo"
-                  android:label="Fzu帮"
-                  android:roundIcon="@drawable/logo">
+            tools:replace="label">
+        <activity android:name=".TradeBlock.AddTradeActivity">
+        </activity>
+        <activity android:name=".TradeBlock.TradeDetailActivity">
+        </activity>
+        <activity
+                android:name=".WelcomeActivity"
+                android:icon="@drawable/logo"
+                android:label="Fzu帮"
+                android:roundIcon="@drawable/logo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -2,9 +2,10 @@ package com.example.huge.fzugang;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,17 +15,23 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
-import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.DeliveryBlock.DeliveryFragment;
 import com.example.huge.fzugang.LostBlock.LostFragment;
+import com.example.huge.fzugang.TradeBlock.AddTradeActivity;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
+import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import java.util.List;
+
+import static com.example.huge.fzugang.Utils.constantUtil.BaseUrl;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private CircleImageView slideAvatar;
-    private TextView slideUserName;
+    private TextView slideUsername;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -32,7 +39,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentTabHost mTabHost;
     private LayoutInflater mLayoutInflater;
     private LinearLayout userInfo;
+    private Button searchButton;
+    private Button addButton;
     private long firstClickTime;//记录退出点击时间
+    private String avatarUrl;//头像地址
 
     //4个切换的页面的fragment.
     private Class mFragmentArray[]={
@@ -68,19 +78,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void init(){
         drawerLayout=findViewById(R.id.drawer_layout);
         slideAvatar=findViewById(R.id.user_avatar);
-        slideUserName=findViewById(R.id.user_name);
+        slideUsername=findViewById(R.id.user_name);
         navigationView=findViewById(R.id.nav_view);
         toolbar=findViewById(R.id.toolbar);
+        searchButton=findViewById(R.id.search_button);
+        addButton=findViewById(R.id.add_button);
         userInfo=navigationView.getHeaderView(0).findViewById(R.id.user_info_layout);
 
         //设置工具栏
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         //侧滑栏设置
         toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,0,0);
         toggle.setDrawerIndicatorEnabled(false);
         toggle.syncState();
 
-        //设置侧滑栏
+        //设置侧滑用户信息
+        try{
+            avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId");
+            Glide.with(MainActivity.this).load(avatarUrl).into(slideAvatar);
+            slideUsername.setText(SharedPreferencesUtil.getStoredMessage(this,"username"));
+        }catch(Exception e){
+        }
+
+        //设置菜单栏按键
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -90,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //设置监听事件
         userInfo.setOnClickListener(new View.OnClickListener(){
@@ -100,8 +120,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+
+        searchButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+//                if(getVisibleFragment() instanceof LostFragment){
+//                    Intent intent=new Intent(MainActivity.this,SearchLostActivity.class);
+//                    startActivity(intent);
+//                }else if(getVisibleFragment() instanceof DeliveryFragment){
+//                    Intent intent=new Intent(MainActivity.this,SearchDeliveryActivity.class);
+//                    startActivity(intent);
+//                }else if(getVisibleFragment() instanceof TradeFragment){
+//                    Intent intent=new Intent(MainActivity.this,SearchTradeActivity.class);
+//                    startActivity(intent);
+//                }else if(getVisibleFragment() instanceof CarpoolFragment){
+//                    Intent intent=new Intent(MainActivity.this,SearchCarpoolActivity.class);
+//                    startActivity(intent);
+//                }
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+//                if(getVisibleFragment() instanceof LostFragment){
+//                    Intent intent=new Intent(MainActivity.this,AddLostActivity.class);
+//                    startActivity(intent);
+//                }else if(getVisibleFragment() instanceof DeliveryFragment){
+//                    Intent intent=new Intent(MainActivity.this,AddDeliveryActivity.class);
+//                    startActivity(intent);
+//                }else
+                if(getVisibleFragment() instanceof TradeFragment){
+                    Intent intent=new Intent(MainActivity.this,AddTradeActivity.class);
+                    startActivity(intent);
+                }
+//                else if(getVisibleFragment() instanceof CarpoolFragment){
+//                    Intent intent=new Intent(MainActivity.this,AddCarpoolActivity.class);
+//                    startActivity(intent);
+//                }
+            }
+        });
     }
 
+    //初始化底部栏
     private void initFragmentTabHost(){
         mLayoutInflater=LayoutInflater.from(this);
 
@@ -143,6 +204,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPointerCaptureChanged(boolean hasCapture){
 
+    }
+
+    //得到当前显示的fragment
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
     }
 
     @Override

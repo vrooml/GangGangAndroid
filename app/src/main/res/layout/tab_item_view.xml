@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageview"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:focusable="false"
         android:padding="7dp"
         />

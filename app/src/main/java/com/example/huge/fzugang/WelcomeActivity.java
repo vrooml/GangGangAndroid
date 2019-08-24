@@ -20,14 +20,14 @@ public class WelcomeActivity extends AppCompatActivity{
 
     private void init(){
         //判断之前是否登录过决定下一页面
-        if(SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token")==null||
-                SharedPreferencesUtil.getStoredMessage(WelcomeActivity.this,"token").equals("false")){
-            new Thread(new Runnable() {
+        if(SharedPreferencesUtil.getStoredMessage(getApplicationContext(),"token")==null||
+                SharedPreferencesUtil.getStoredMessage(getApplicationContext(),"token").equals("false")){
+            new Thread(new Runnable(){
                 @Override
-                public void run() {
-                    try {
+                public void run(){
+                    try{
                         Thread.sleep(2000);
-                    } catch (InterruptedException e) {
+                    }catch(InterruptedException e){
                         e.printStackTrace();
                     }
                     runOnUiThread(new Runnable(){
@@ -44,12 +44,12 @@ public class WelcomeActivity extends AppCompatActivity{
 
 
         }else{
-            new Thread(new Runnable() {
+            new Thread(new Runnable(){
                 @Override
-                public void run() {
-                    try {
+                public void run(){
+                    try{
                         Thread.sleep(2000);
-                    } catch (InterruptedException e) {
+                    }catch(InterruptedException e){
                         e.printStackTrace();
                     }
                     runOnUiThread(new Runnable(){

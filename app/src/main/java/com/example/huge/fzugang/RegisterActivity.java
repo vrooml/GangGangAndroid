@@ -2,18 +2,29 @@ package com.example.huge.fzugang;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.RetrofitStuff.AuthCodeRequest;
+import com.example.huge.fzugang.RetrofitStuff.RegisterRequest;
 import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.BarcolorUtil;
-import com.example.huge.fzugang.Utils.FzuGangTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
+import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.LoadingdialogUtil;
+import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
+import com.zyao89.view.zloading.ZLoadingDialog;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class RegisterActivity extends AppCompatActivity{
     @BindView(R.id.register_button)
@@ -21,9 +32,12 @@ public class RegisterActivity extends AppCompatActivity{
     @BindView(R.id.register_send_authcode_button)
     QMUIRoundButton registerSendCodeButton;
     @BindView(R.id.register_phonenum_edit)
-    EditText registerPhonenumEdit;
+    TextInputLayout registerPhonenumEdit;
     @BindView(R.id.register_authcode_edit)
-    EditText registerCodeEdit;
+    TextInputLayout registerCodeEdit;
+
+    private boolean correctPhone;
+    private boolean correctCode;
 
 
     @Override
@@ -39,26 +53,69 @@ public class RegisterActivity extends AppCompatActivity{
         //先让按钮失效
         registerButton.setEnabled(false);
         //设置文本框改变监听
-        registerPhonenumEdit.addTextChangedListener(new FzuGangTextWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
-        registerCodeEdit.addTextChangedListener(new FzuGangTextWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
+        registerPhonenumEdit.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
+        registerCodeEdit.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
+        registerPhonenumEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(registerPhonenumEdit.getEditText().getText().length()!=11){
+                    registerPhonenumEdit.setError("手机号长度不正确");
+                    registerPhonenumEdit.setErrorEnabled(true);
+                }else if(registerPhonenumEdit.getEditText().getText().length()==0){
+                    registerPhonenumEdit.setError("手机号不能为空");
+                    registerPhonenumEdit.setErrorEnabled(true);
+                }else{
+                    correctPhone=true;
+                }
+                if(correctPhone&&correctCode){
+                    registerButton.setEnabled(true);
+                }else{
+                    registerButton.setEnabled(false);
+                }
+            }
+        });
+
+        registerCodeEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(registerCodeEdit.getEditText().getText().length()==0){
+                    registerCodeEdit.setError("验证码不能为空");
+                    registerCodeEdit.setErrorEnabled(true);
+                }else{
+                    correctCode=true;
+                }
+                if(correctPhone&&correctCode){
+                    registerButton.setEnabled(true);
+                }else{
+                    registerButton.setEnabled(false);
+                }
+            }
+        });
 
         //设置确认键监听
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(registerPhonenumEdit.getText().length()!=11){
-                    Toast.makeText(RegisterActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
-                }else{
-//                    RetrofitUtil.postRegister(registerPhonenumEdit.getText().toString(),registerCodeEdit.getText().toString());//发送登录请求
-                    Intent intent=new Intent(RegisterActivity.this,PerfectionInfoActivity.class);
-                    startActivity(intent);
-                    RegisterActivity.this.finish();
-                }
+                ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(RegisterActivity.this);
+                RegisterRequest registerRequest=new RegisterRequest(registerPhonenumEdit.getEditText().getText().toString(),registerCodeEdit.getEditText().getText().toString()
+                        ,SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"authCodeToken"));
+                RetrofitUtil.postRegister(RegisterActivity.this,registerRequest,zLoadingDialog);//发送登录请求
             }
         });
 
         final CountDownTimer mCountDownTimer = new CountDownTimer(60 * 1000, 1000) {
-
             @Override
             public void onTick(long time) {
                 registerSendCodeButton.setEnabled(false);
@@ -76,10 +133,17 @@ public class RegisterActivity extends AppCompatActivity{
         registerSendCodeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(registerPhonenumEdit.getText().length()!=11){
+                if(registerPhonenumEdit.getEditText().getText().length()!=11){
                     Toast.makeText(RegisterActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
                 }else{
-//                    RetrofitUtil.postRegisterCode();
+                    String codeMsg=null;
+                    try{
+                        codeMsg=URLEncoder.encode("注册","utf-8");
+                    }catch(UnsupportedEncodingException e){
+                        e.printStackTrace();
+                    }
+                    AuthCodeRequest authCodeRequest=new AuthCodeRequest(registerPhonenumEdit.getEditText().getText().toString(),codeMsg);
+                    RetrofitUtil.postAuthCode(authCodeRequest);
                     mCountDownTimer.start();
                 }
             }
