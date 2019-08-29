@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.example.huge.fzugang.R;
 
 import java.util.ArrayList;
@@ -53,7 +54,8 @@ public class TradeListAdapter extends BaseAdapter{
             viewHolder.fineness=convertView.findViewById(R.id.trade_fineness);
             viewHolder.content=convertView.findViewById(R.id.trade_content);
             viewHolder.price=convertView.findViewById(R.id.trade_price);
-            viewHolder.postTime=convertView.findViewById(R.id.trade_post_time);
+            viewHolder.postTime1=convertView.findViewById(R.id.trade_post_time_1);
+            viewHolder.postTime2=convertView.findViewById(R.id.trade_post_time_2);
             convertView.setTag(viewHolder);
         }else{
             viewHolder=(ViewHolder)convertView.getTag();
@@ -62,8 +64,12 @@ public class TradeListAdapter extends BaseAdapter{
         viewHolder.titie.setText(item.getTitle());
         viewHolder.content.setText(item.getContent());
         viewHolder.fineness.setText(item.getFineness());
-        viewHolder.postTime.setText(item.getPostTime());
+        viewHolder.postTime1.setText(item.getPostDate());
+        viewHolder.postTime2.setText(item.getPostDate());
         viewHolder.price.setText(item.getPrice());
+        if(item.getPictureUrls()!=null){
+            Glide.with(context).load(item.getPictureUrls().get(0)).centerCrop().into(viewHolder.postImage);
+        }
 
         //进入详情页监听
         viewHolder.postLayout.setOnClickListener(new View.OnClickListener(){
@@ -84,7 +90,8 @@ public class TradeListAdapter extends BaseAdapter{
         TextView titie;
         TextView fineness;
         TextView content;
-        TextView postTime;
+        TextView postTime1;
+        TextView postTime2;
         TextView price;
     }
 }

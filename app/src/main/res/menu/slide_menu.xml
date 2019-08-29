@@ -2,15 +2,20 @@
 <menu
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/slide_menu">
-    <item
-            android:id="@+id/my_post_item"
-            android:icon="@drawable/my_post_icon"
-            android:title="我的发布"
-            />
-    <item
-            android:id="@+id/feed_item"
-            android:icon="@drawable/feedback_icon"
-            android:title="问题反馈"
-            />
+    <group
+            android:id="@+id/slide_menu_group">
+
+
+        <item
+                android:id="@+id/my_post_item"
+                android:icon="@drawable/my_post_icon"
+                android:title="我的发布"
+                />
+        <item
+                android:id="@+id/feed_item"
+                android:icon="@drawable/feedback_icon"
+                android:title="问题反馈"
+                />
+    </group>
 
 </menu>

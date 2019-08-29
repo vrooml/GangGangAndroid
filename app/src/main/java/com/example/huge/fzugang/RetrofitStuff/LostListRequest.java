@@ -1,14 +1,16 @@
 package com.example.huge.fzugang.RetrofitStuff;
 
-public class TradeListRequest{
+public class LostListRequest{
     private String token;
     private String page;
     private String num;
+    private int classify;
 
-    public TradeListRequest(String token,String page,String num){
+    public LostListRequest(String token,String page,String num,int classify){
         this.token=token;
         this.page=page;
         this.num=num;
+        this.classify=classify;
     }
 
     public String getToken(){
@@ -33,5 +35,13 @@ public class TradeListRequest{
 
     public void setNum(String num){
         this.num=num;
+    }
+
+    public int getClassify(){
+        return classify;
+    }
+
+    public void setClassify(int classify){
+        this.classify=classify;
     }
 }

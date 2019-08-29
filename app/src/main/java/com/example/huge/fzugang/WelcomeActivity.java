@@ -1,11 +1,10 @@
 package com.example.huge.fzugang;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.WindowManager;
+import android.util.Log;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 
 public class WelcomeActivity extends AppCompatActivity{
@@ -20,8 +19,8 @@ public class WelcomeActivity extends AppCompatActivity{
 
     private void init(){
         //判断之前是否登录过决定下一页面
-        if(SharedPreferencesUtil.getStoredMessage(getApplicationContext(),"token")==null||
-                SharedPreferencesUtil.getStoredMessage(getApplicationContext(),"token").equals("false")){
+        if(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")==null||
+                SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token").equals("false")){
             new Thread(new Runnable(){
                 @Override
                 public void run(){
@@ -55,6 +54,7 @@ public class WelcomeActivity extends AppCompatActivity{
                     runOnUiThread(new Runnable(){
                         @Override
                         public void run(){
+                            RetrofitUtil.postUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
                             Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);

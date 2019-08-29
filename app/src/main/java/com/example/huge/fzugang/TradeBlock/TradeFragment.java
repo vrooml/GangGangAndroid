@@ -4,16 +4,17 @@ package com.example.huge.fzugang.TradeBlock;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.MyApplication;
 import com.example.huge.fzugang.R;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.RetrofitStuff.TradeListRequest;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -50,13 +51,14 @@ public class TradeFragment extends Fragment{
     }
 
     private void init(){
-//        TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),1,10);
-//        RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
-
-        title=getActivity().findViewById(R.id.block_title);
-        title.setText("二手交易");
+        page=1;
+        tradeData=new ArrayList<TradeInfo>();
         tradeListAdapter=new TradeListAdapter(this.getContext(),tradeData);
         tradeListView.setAdapter(tradeListAdapter);
+        title=getActivity().findViewById(R.id.block_title);
+        title.setText("二手交易");
+        TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10");
+        RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
 
     }
 
@@ -64,21 +66,21 @@ public class TradeFragment extends Fragment{
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-//                tradeData.clear();
                 page=1;
-                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),1,10);
+                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10");
+                Log.d("debug","onRefresh: token   "+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
                 RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
                 tradeListAdapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh(5000/*,false*/);//传入false表示刷新失败
+                refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(getActivity(),"token"),++page,10);
+                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(++page),"10");
                 RetrofitUtil.postTradeList(tradeListRequest,zLoadingDialog);
                 tradeListAdapter.notifyDataSetChanged();
-                refreshlayout.finishLoadMore(5000/*,false*/);//传入false表示加载失败
+                refreshlayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
             }
         });
     }

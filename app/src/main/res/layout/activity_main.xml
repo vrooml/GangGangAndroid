@@ -43,7 +43,7 @@
                             android:ellipsize="end"
                             android:text="当前版块"
                             android:textColor="@color/qmui_config_color_white"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
 
                 </android.support.v7.widget.Toolbar>

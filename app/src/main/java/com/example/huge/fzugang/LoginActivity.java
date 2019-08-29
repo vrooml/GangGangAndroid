@@ -8,15 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.RetrofitStuff.LoginRequest;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
-import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -67,6 +64,7 @@ public class LoginActivity extends AppCompatActivity{
                     phoneNumEdit.setErrorEnabled(true);
                 }else{
                     correctPhone=true;
+                    phoneNumEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctPassword){
                     loginButton.setEnabled(true);
@@ -90,6 +88,7 @@ public class LoginActivity extends AppCompatActivity{
                     passwordEdit.setErrorEnabled(true);
                 }else{
                     correctPassword=true;
+                    passwordEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctPassword){
                     loginButton.setEnabled(true);

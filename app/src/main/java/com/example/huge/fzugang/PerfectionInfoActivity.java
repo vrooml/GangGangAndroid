@@ -9,10 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.example.huge.fzugang.RetrofitStuff.LoginRequest;
 import com.example.huge.fzugang.RetrofitStuff.PerfectionRequest;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.BarcolorUtil;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
@@ -48,7 +46,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
     private void init(){
         selectGender=false;
         correctPassword=false;
-        correctPassword=false;
+        correctUserName=false;
         //先让按钮失效
         perfectionButton.setEnabled(false);
         //设置文本框改变监听
@@ -61,15 +59,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
             }
             @Override
             public void afterTextChanged(Editable s){
-                if(perfectionUsernameEdit.getEditText().getText().length()!=11){
-                    perfectionUsernameEdit.setError("手机号长度不正确");
-                    perfectionUsernameEdit.setErrorEnabled(true);
-                }else if(perfectionUsernameEdit.getEditText().getText().length()==0){
-                    perfectionUsernameEdit.setError("手机号不能为空");
-                    perfectionUsernameEdit.setErrorEnabled(true);
-                }else{
                     correctUserName=true;
-                }
                 if(correctUserName&&correctPassword&&selectGender){
                     perfectionButton.setEnabled(true);
                 }else{
@@ -107,8 +97,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
             public void onClick(View v){
                 zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(PerfectionInfoActivity.this);
                 PerfectionRequest perfectionRequest=new PerfectionRequest(
-                        SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
-                        ,perfectionUsernameEdit.getEditText().getText().toString()
+                        perfectionUsernameEdit.getEditText().getText().toString()
                         ,perfectionPasswordEdit.getEditText().getText().toString()
                         ,SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"phoneNum")
                         ,gender);
@@ -125,6 +114,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
                 }
                 perfectionBoyButton.setImageResource(R.drawable.boy_icon);
                 gender="男";
+                selectGender=true;
             }
         });
 
@@ -137,6 +127,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
                 }
                 perfectionGirlButton.setImageResource(R.drawable.girl_icon);
                 gender="女";
+                selectGender=true;
             }
         });
 

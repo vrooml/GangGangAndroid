@@ -1,26 +1,16 @@
 package com.example.huge.fzugang.RetrofitStuff;
 
 public class PerfectionRequest{
-    private String token;
     private String username;
     private String password;
     private String phone;
     private String gender;
 
-    public PerfectionRequest(String token,String username,String password,String phone,String gender){
-        this.token=token;
+    public PerfectionRequest(String username,String password,String phone,String gender){
         this.username=username;
         this.password=password;
         this.phone=phone;
         this.gender=gender;
-    }
-
-    public String getToken(){
-        return token;
-    }
-
-    public void setToken(String token){
-        this.token=token;
     }
 
     public String getUsername(){

@@ -1,6 +1,5 @@
 package com.example.huge.fzugang;
 
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,22 +8,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.RetrofitStuff.AuthCodeRequest;
 import com.example.huge.fzugang.RetrofitStuff.RegisterRequest;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
-import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.zyao89.view.zloading.ZLoadingDialog;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class RegisterActivity extends AppCompatActivity{
     @BindView(R.id.register_button)
@@ -53,8 +46,6 @@ public class RegisterActivity extends AppCompatActivity{
         //先让按钮失效
         registerButton.setEnabled(false);
         //设置文本框改变监听
-        registerPhonenumEdit.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
-        registerCodeEdit.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,registerButton,registerPhonenumEdit,registerCodeEdit));
         registerPhonenumEdit.getEditText().addTextChangedListener(new TextWatcher(){
             @Override
             public void beforeTextChanged(CharSequence s,int start,int count,int after){
@@ -72,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity{
                     registerPhonenumEdit.setErrorEnabled(true);
                 }else{
                     correctPhone=true;
+                    registerPhonenumEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode){
                     registerButton.setEnabled(true);
@@ -95,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity{
                     registerCodeEdit.setErrorEnabled(true);
                 }else{
                     correctCode=true;
+                    registerCodeEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode){
                     registerButton.setEnabled(true);
@@ -136,12 +129,7 @@ public class RegisterActivity extends AppCompatActivity{
                 if(registerPhonenumEdit.getEditText().getText().length()!=11){
                     Toast.makeText(RegisterActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
                 }else{
-                    String codeMsg=null;
-                    try{
-                        codeMsg=URLEncoder.encode("注册","utf-8");
-                    }catch(UnsupportedEncodingException e){
-                        e.printStackTrace();
-                    }
+                    String codeMsg="注册";
                     AuthCodeRequest authCodeRequest=new AuthCodeRequest(registerPhonenumEdit.getEditText().getText().toString(),codeMsg);
                     RetrofitUtil.postAuthCode(authCodeRequest);
                     mCountDownTimer.start();

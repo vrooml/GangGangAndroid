@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:background="@color/qmui_config_color_white"
         android:layout_height="match_parent"
-        tools:context=".TradeBlock.AddTradeActivity">
+        tools:context=".LostBlock.AddLostActivity">
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -57,15 +57,45 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <RelativeLayout
+    <LinearLayout
+            android:id="@+id/add_lost_choose_classify"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="60sp">
+        <Button
+                android:id="@+id/found_classify_button"
+                android:text="拾取失物"
+                android:textSize="17sp"
+                android:textColor="@color/qmui_config_color_gray_3"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        <Button
+                android:id="@+id/lost_classify_button"
+                android:text="寻找失物"
+                android:textSize="17sp"
+                android:textColor="@color/qmui_config_color_gray_3"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <View
+            android:background="@color/qmui_config_color_gray_3"
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"/>
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
 
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_trade_title"
-                app:errorEnabled="false"
-                android:layout_marginTop="10dp"
+                android:id="@+id/add_lost_title"
+                app:errorEnabled="true"
                 android:layout_marginLeft="8sp"
                 android:layout_marginRight="8sp"
                 android:layout_width="match_parent"
@@ -74,16 +104,15 @@
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="宝贝标题"
+                    android:hint="标题"
                     android:background="@drawable/edittext_background"
                     android:maxLines="2" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_trade_content"
-                app:errorEnabled="false"
-                android:layout_below="@id/add_trade_title"
-                android:layout_marginTop="10dp"
+                android:id="@+id/add_lost_content"
+                app:errorEnabled="true"
+                android:layout_below="@id/add_lost_title"
                 android:layout_marginLeft="8sp"
                 android:layout_marginRight="8sp"
                 android:layout_width="match_parent"
@@ -92,65 +121,53 @@
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="宝贝详情描述（出手原因、购买方式、包装等）"
+                    android:hint="失物详情描述（物品外观、特征等）"
                     android:gravity="left"
                     android:background="@drawable/edittext_background"
-                    android:minLines="10" />
+                    android:minLines="6" />
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-                android:id="@+id/add_trade_other_layout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                android:layout_below="@id/add_trade_content">
-
-            <android.support.design.widget.TextInputLayout
-                    android:id="@+id/add_trade_price"
-                    app:errorEnabled="false"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20sp">
-                <EditText
-                        android:hint="价格"
-                        android:padding="12dp"
-                        android:maxLines="1"
-                        android:maxLength="7"
-                        android:inputType="number|numberDecimal"
-                        android:background="@drawable/edittext_background"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                    android:id="@+id/add_trade_fineness"
-                    app:errorEnabled="false"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1">
-                <EditText
-                        android:hint="成色（XX新）"
-                        android:padding="12dp"
-                        android:maxLines="1"
-                        android:background="@drawable/edittext_background"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_trade_contact"
-                app:errorEnabled="false"
-                app:boxBackgroundMode="none"
-                app:boxBackgroundColor="@color/qmui_config_color_white"
+                android:id="@+id/add_lost_place"
+                app:errorEnabled="true"
+                android:layout_below="@id/add_lost_content"
                 android:layout_marginLeft="8sp"
                 android:layout_marginRight="8sp"
-                android:layout_below="@id/add_trade_other_layout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            <EditText
+                    android:hint="丢失/拾到地点"
+                    android:padding="12dp"
+                    android:maxLines="1"
+                    android:background="@drawable/edittext_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/add_lost_time"
+                app:errorEnabled="true"
+                android:layout_below="@id/add_lost_place"
+                android:layout_marginLeft="8sp"
+                android:layout_marginRight="8sp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            <EditText
+                    android:hint="丢失/拾到时间"
+                    android:padding="12dp"
+                    android:maxLines="1"
+                    android:background="@drawable/edittext_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/add_lost_contact"
+                app:errorEnabled="true"
+                android:layout_marginLeft="8sp"
+                android:layout_marginRight="8sp"
+                android:layout_below="@id/add_lost_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <EditText
@@ -163,7 +180,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <GridView
-                android:id="@+id/add_trade_pick_picture"
+                android:id="@+id/add_lost_pick_picture"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="10dp"
@@ -172,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:numColumns="5"
                 android:columnWidth="30dp"
-                android:layout_below="@id/add_trade_contact">
+                android:layout_below="@id/add_lost_contact">
         </GridView>
 
     </RelativeLayout>

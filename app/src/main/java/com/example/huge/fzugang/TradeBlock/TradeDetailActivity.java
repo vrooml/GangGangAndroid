@@ -1,16 +1,16 @@
 package com.example.huge.fzugang.TradeBlock;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cc.shinichi.library.ImagePreview;
 import com.bumptech.glide.Glide;
 import com.example.huge.fzugang.R;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
@@ -45,6 +45,8 @@ public class TradeDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_detail);
+
+        ButterKnife.bind(this);
         init();
         initBanner();
 
@@ -53,35 +55,38 @@ public class TradeDetailActivity extends AppCompatActivity{
     private void init(){
         position=(int)getIntent().getSerializableExtra("position");
         tradeInfo=TradeFragment.tradeData.get(position);
+        Log.d("debug","init: tradeInfo"+tradeInfo.getTitle());
         title.setText(tradeInfo.getTitle());
         fineness.setText(tradeInfo.getFineness());
         price.setText(tradeInfo.getPrice());
-        postTime.setText(tradeInfo.getPostTime());
+        postTime.setText(tradeInfo.getPostDate());
         content.setText(tradeInfo.getContent());
         username.setText(tradeInfo.getUsername());
         contact.setText(tradeInfo.getContact());
         try{
             avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+tradeInfo.getUserId();
-            Glide.with(TradeDetailActivity.this).load(avatarUrl).into(avatar);
+            Glide.with(TradeDetailActivity.this).load(avatarUrl).placeholder(R.drawable.avatar_boy).into(avatar);
         }catch(Exception e){
         }
     }
 
     private void initBanner(){
-        banner.setImageLoader(new GlideImageLoader())
-                .setImages(tradeInfo.getPictureUrls())
-                .setOnBannerListener(new OnBannerListener(){
-                    @Override
-                    public void OnBannerClick(int position){
-                        ImagePreview.getInstance()
-                                .setContext(TradeDetailActivity.this)
-                                .setIndex(0)
-                                .setImageList(tradeInfo.getPictureUrls())
-                                .start();
-                    }
-                })
-                .isAutoPlay(false)
-                .start();
+        if(tradeInfo.getPictureUrls()!=null){
+            banner.setImageLoader(new GlideImageLoader())
+                    .setImages(tradeInfo.getPictureUrls())
+                    .setOnBannerListener(new OnBannerListener(){
+                        @Override
+                        public void OnBannerClick(int position){
+                            ImagePreview.getInstance()
+                                    .setContext(TradeDetailActivity.this)
+                                    .setIndex(0)
+                                    .setImageList(tradeInfo.getPictureUrls())
+                                    .start();
+                        }
+                    })
+                    .isAutoPlay(false)
+                    .start();
+        }
     }
 
 
@@ -93,6 +98,7 @@ public class TradeDetailActivity extends AppCompatActivity{
 
             Glide.with(context)
                     .load(path)
+                    .fitCenter()
                     .placeholder(R.drawable.default_picture)
                     .into(imageView);
         }

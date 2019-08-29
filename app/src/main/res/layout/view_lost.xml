@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <www.linwg.org.lib.LCardView
+            android:layout_width="match_parent"
+            android:layout_height="160sp"
+            app:cornerRadius="8sp"
+            app:shadowSize="10sp"
+            app:shadowFluidShape="adsorption"
+            app:shadowStartAlpha="20"
+            android:foreground="?android:attr/selectableItemBackground"
+            >
+        <LinearLayout
+                android:id="@+id/lost_post_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:id="@+id/lost_picture"
+                    android:layout_width="160sp"
+                    android:src="@drawable/default_picture"
+                    android:layout_height="match_parent"/>
+            <RelativeLayout
+                    android:padding="12sp"
+                    android:layout_marginLeft="8sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:id="@+id/lost_title"
+                        android:text="无标题"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/lost_place_prefix"
+                        android:text="地点："
+                        android:textSize="13sp"
+                        android:textColor="@color/qmui_config_color_gray_5"
+                        android:layout_below="@id/lost_title"
+                        android:layout_marginTop="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/lost_place"
+                        android:text="福大教学楼西三"
+                        android:textSize="13sp"
+                        android:textColor="@color/qmui_config_color_gray_2"
+                        android:layout_toRightOf="@id/lost_place_prefix"
+                        android:layout_below="@id/lost_title"
+                        android:layout_marginTop="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/lost_time_prefix"
+                        android:text="时间："
+                        android:textSize="13sp"
+                        android:textColor="@color/qmui_config_color_gray_5"
+                        android:layout_below="@id/lost_place_prefix"
+                        android:layout_marginTop="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/lost_time"
+                        android:text="上午第二节课下课后"
+                        android:textSize="13sp"
+                        android:textColor="@color/qmui_config_color_gray_2"
+                        android:layout_toRightOf="@id/lost_time_prefix"
+                        android:layout_below="@id/lost_place"
+                        android:layout_marginTop="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/lost_post_time"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="2019-8-21"
+                        android:textSize="12sp"
+                        android:textColor="@color/qmui_config_color_gray_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </www.linwg.org.lib.LCardView>
+
+</RelativeLayout>

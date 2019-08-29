@@ -1,6 +1,5 @@
 package com.example.huge.fzugang;
 
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,16 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.RetrofitStuff.AuthCodeRequest;
 import com.example.huge.fzugang.RetrofitStuff.ForgetPasswordRequest;
-import com.example.huge.fzugang.RetrofitStuff.RegisterRequest;
-import com.example.huge.fzugang.RetrofitStuff.RetrofitUtil;
-import com.example.huge.fzugang.Utils.FzuGangEditTextWatcher;
-import com.example.huge.fzugang.Utils.FzuGangTextInputWatcher;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
@@ -79,6 +74,7 @@ public class ForgetPasswordActivity extends AppCompatActivity{
                     forgetPhonenumEdit.setErrorEnabled(true);
                 }else{
                     correctPhone=true;
+                    forgetPhonenumEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
                     forgetConfirmButton.setEnabled(true);
@@ -102,6 +98,7 @@ public class ForgetPasswordActivity extends AppCompatActivity{
                     forgetCodeEdit.setErrorEnabled(true);
                 }else{
                     correctCode=true;
+                    forgetCodeEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
                     forgetConfirmButton.setEnabled(true);
@@ -131,6 +128,7 @@ public class ForgetPasswordActivity extends AppCompatActivity{
                     forgetPasswordEdit.setErrorEnabled(true);
                 }else{
                     correctPassword=true;
+                    forgetPasswordEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
                     forgetConfirmButton.setEnabled(true);
@@ -163,6 +161,7 @@ public class ForgetPasswordActivity extends AppCompatActivity{
                     forgetPasswordEdit.setErrorEnabled(true);
                 }else{
                     correctConfirmPassword=true;
+                    forgetPasswordEdit.setErrorEnabled(false);
                 }
                 if(correctPhone&&correctCode&&correctConfirmPassword&&correctPassword){
                     forgetConfirmButton.setEnabled(true);

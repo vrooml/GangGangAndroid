@@ -13,12 +13,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.DeliveryBlock.DeliveryFragment;
+import com.example.huge.fzugang.LostBlock.AddLostActivity;
 import com.example.huge.fzugang.LostBlock.LostFragment;
 import com.example.huge.fzugang.TradeBlock.AddTradeActivity;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
@@ -30,6 +32,7 @@ import java.util.List;
 import static com.example.huge.fzugang.Utils.constantUtil.BaseUrl;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private View headerview;
     private CircleImageView slideAvatar;
     private TextView slideUsername;
     private NavigationView navigationView;
@@ -77,9 +80,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void init(){
         drawerLayout=findViewById(R.id.drawer_layout);
-        slideAvatar=findViewById(R.id.user_avatar);
-        slideUsername=findViewById(R.id.user_name);
         navigationView=findViewById(R.id.nav_view);
+        headerview=navigationView.getHeaderView(0);
+        slideAvatar=headerview.findViewById(R.id.user_avatar);
+        slideUsername=headerview.findViewById(R.id.user_name);
         toolbar=findViewById(R.id.toolbar);
         searchButton=findViewById(R.id.search_button);
         addButton=findViewById(R.id.add_button);
@@ -93,11 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.setDrawerIndicatorEnabled(false);
         toggle.syncState();
 
+        Log.d("debug","init: aaaaaaaaaaa"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username")+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"));
         //设置侧滑用户信息
         try{
             avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId");
             Glide.with(MainActivity.this).load(avatarUrl).into(slideAvatar);
-            slideUsername.setText(SharedPreferencesUtil.getStoredMessage(this,"username"));
+            slideUsername.setText(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
         }catch(Exception e){
         }
 
@@ -143,10 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-//                if(getVisibleFragment() instanceof LostFragment){
-//                    Intent intent=new Intent(MainActivity.this,AddLostActivity.class);
-//                    startActivity(intent);
-//                }else if(getVisibleFragment() instanceof DeliveryFragment){
+                if(getVisibleFragment() instanceof LostFragment){
+                    Intent intent=new Intent(MainActivity.this,AddLostActivity.class);
+                    startActivity(intent);
+                }
+//                else if(getVisibleFragment() instanceof DeliveryFragment){
 //                    Intent intent=new Intent(MainActivity.this,AddDeliveryActivity.class);
 //                    startActivity(intent);
 //                }else

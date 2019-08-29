@@ -7,11 +7,11 @@
 
     <www.linwg.org.lib.LCardView
             android:layout_width="match_parent"
-            android:layout_height="160sp"
-            app:cornerRadius="8sp"
-            app:shadowSize="10sp"
-            app:shadowFluidShape="adsorption"
-            app:shadowStartAlpha="20"
+            android:layout_height="160dp"
+            app:cornerRadius="8dp"
+            app:shadowSize="10dp"
+            app:shadowFluidShape="linear"
+            app:shadowStartAlpha="30"
             android:foreground="?android:attr/selectableItemBackground"
             >
         <LinearLayout
@@ -21,67 +21,77 @@
                 android:layout_height="match_parent">
             <ImageView
                     android:id="@+id/trade_picture"
-                    android:layout_width="160sp"
+                    android:layout_width="140dp"
                     android:src="@drawable/default_picture"
+                    android:background="@color/qmui_config_color_pure_black"
                     android:layout_height="match_parent"/>
             <RelativeLayout
-                    android:padding="8sp"
-                    android:layout_marginLeft="8sp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <TextView
                         android:id="@+id/trade_title"
                         android:text="无标题"
                         android:textStyle="bold"
-                        android:textSize="22sp"
-                        android:layout_width="wrap_content"
+                        android:textSize="20dp"
+                        android:layout_marginTop="10sp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_fineness"
                         android:text="99新"
-                        android:textSize="15sp"
+                        android:textSize="14dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_title"
-                        android:layout_marginTop="5sp"
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_content"
                         android:text="详情"
-                        android:textSize="15sp"
+                        android:textSize="14dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_fineness"
-                        android:layout_marginTop="5sp"
-                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="180sp"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_price_prefix"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="8sp"
+                        android:layout_marginBottom="8dp"
                         android:textColor="@color/qmui_config_color_red"
                         android:text="￥"
-                        android:textSize="15sp"
+                        android:textSize="12dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_price"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="4sp"
+                        android:layout_marginBottom="6dp"
                         android:layout_toRightOf="@id/trade_price_prefix"
-                        android:layout_marginLeft="8sp"
+                        android:layout_marginLeft="2dp"
                         android:textColor="@color/qmui_config_color_red"
-                        android:text="0"
-                        android:textSize="25sp"
+                        android:text="999.9"
+                        android:textSize="20dp"
                         android:textStyle="bold"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/trade_post_time_1"
+                        android:layout_above="@id/trade_post_time_2"
+                        android:layout_alignParentRight="true"
+                        android:text="2019-8-21"
+                        android:textSize="10dp"
+                        android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
-                        android:id="@+id/trade_post_time"
+                        android:id="@+id/trade_post_time_2"
                         android:layout_alignBottom="@id/trade_price_prefix"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="10sp"
-                        android:text="2019-8-21"
-                        android:textSize="12sp"
+                        android:text="12:15:00"
+                        android:textSize="10dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

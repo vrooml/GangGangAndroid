@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.MyApplication;
 import com.example.huge.fzugang.R;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
@@ -80,7 +81,7 @@ public class TradeSearchActivity extends AppCompatActivity{
                     Toast.makeText(searchList.getContext(),"查询词不能为空哦~",Toast.LENGTH_SHORT).show();
                 }else{
                     data.clear();
-                    String token=SharedPreferencesUtil.getStoredMessage(getApplicationContext(),"token");
+                    String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
                     ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
 //                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,keyWord,String.valueOf(classify),"1");
 //                    RetrofitUtil.postSearchPost(searchList.getContext(),postSearchRequest,data,zLoadingDialog);

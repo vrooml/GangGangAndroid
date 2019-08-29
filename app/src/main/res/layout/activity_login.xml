@@ -52,6 +52,8 @@
         <android.support.design.widget.TextInputLayout
                 android:id="@+id/login_phonenum_edit"
                 app:errorEnabled="true"
+                android:layout_marginLeft="30sp"
+                android:layout_marginRight="30sp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
 
@@ -59,8 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="手机号"
-                    android:layout_marginLeft="30sp"
-                    android:layout_marginRight="30sp"
                     android:theme="@style/FzuGangEditText"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -69,6 +69,8 @@
                 android:id="@+id/login_password_edit"
                 app:errorEnabled="true"
                 app:passwordToggleEnabled="true"
+                android:layout_marginLeft="30sp"
+                android:layout_marginRight="30sp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
             <EditText
@@ -77,9 +79,6 @@
                     android:hint="密码"
                     android:inputType="textPassword"
                     android:layout_below="@id/login_phonenum_edit"
-                    android:layout_marginLeft="30sp"
-                    android:layout_marginRight="30sp"
-                    android:layout_marginTop="25sp"
                     android:theme="@style/FzuGangEditText"/>
         </android.support.design.widget.TextInputLayout>
 

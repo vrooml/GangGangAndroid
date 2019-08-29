@@ -1,4 +1,4 @@
-package com.example.huge.fzugang.TradeBlock;
+package com.example.huge.fzugang;
 
 import android.content.Context;
 import android.net.Uri;

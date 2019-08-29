@@ -1,14 +1,12 @@
 package com.example.huge.fzugang.RetrofitStuff;
 
 import com.example.huge.fzugang.ForgetPasswordActivity;
+import com.example.huge.fzugang.LostBlock.LostInfo;
 import com.example.huge.fzugang.TradeBlock.TradeInfo;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.PartMap;
+import retrofit2.http.*;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,7 @@ public interface PostInterfaces{
     Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest token);
 
     //请求注册账户
-    @POST("/fdbl1.0.0/user/vercode")
+    @POST("/fdb1.0.0/user/vercode")
     Call<ResponseModel> postRegister(@Body RegisterRequest registerRequest);
 
     //请求完善信息
@@ -30,12 +28,16 @@ public interface PostInterfaces{
     @POST("/fdb1.0.0/user/info/update/password")
     Call<ResponseModel> postForgetPassword(@Body ForgetPasswordRequest forgetPasswordRequest);
 
-    //获取用户信息
-    @POST("/fdb1.0.0/user/info/getId")
-    Call<ResponseModel<UserInfo>> postUserInfo(@Body String token);
+    //获取本用户信息
+    @POST("/fdb1.0.0/user/info/getMessage")
+    Call<ResponseModel<UserInfo>> postUserInfo(@Body UserInfoRequest userInfoRequest);
+
+    //获取指定用户简略信息
+    @POST("/fdb1.0.0/user/info/get")
+    Call<ResponseModel<UserInfo>> postUserBriefInfo(@Body UserInfoRequest userInfoRequest);
 
     //登录请求
-    @POST("/fdbl1.0.0/user/login")
+    @POST("/fdb1.0.0/user/login")
     Call<ResponseModel<String>> login(@Body LoginRequest loginRequest);
 
     //请求交易帖子列表
@@ -43,8 +45,19 @@ public interface PostInterfaces{
     Call<ResponseModel<TradeInfo[]>> postTradeList(@Body TradeListRequest tradeListRequest);
 
     //请求发布交易
+    @Multipart
     @POST("/fdb1.0.0/trade/add")
     Call<ResponseModel> postAddTrade(@PartMap Map<String,RequestBody> tradeText,
                                      @Part List<MultipartBody.Part> tradePic);
+
+    //请求失物招领帖子列表
+    @POST("/fdb1.0.0/lostProperty/list")
+    Call<ResponseModel<LostInfo[]>> postLostList(@Body LostListRequest lostListRequest);
+
+    //请求发布失物招领
+    @Multipart
+    @POST("/fdb1.0.0/lostProperty/add")
+    Call<ResponseModel> postAddLost(@PartMap Map<String,RequestBody> lostText,
+                                     @Part List<MultipartBody.Part> lostPic);
 
 }
