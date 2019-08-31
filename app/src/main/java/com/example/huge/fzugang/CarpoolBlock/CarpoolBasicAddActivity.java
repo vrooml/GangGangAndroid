@@ -236,7 +236,7 @@ public class CarpoolBasicAddActivity extends AppCompatActivity {
 
     private void showQMUICheckableDialog(final QMUICommonListItemView numOfPeopleItem) {
         final String[] items = new String[]{"1", "2", "3"};
-        final int checkIndex = 1;
+        final int checkIndex = numOfPeople-1;
         new QMUIDialog.CheckableDialogBuilder(CarpoolBasicAddActivity.this)
                 .setCheckedIndex(checkIndex)
                 .addItems(items, new DialogInterface.OnClickListener() {

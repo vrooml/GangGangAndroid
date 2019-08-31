@@ -3,6 +3,7 @@ package com.example.huge.fzugang.CarpoolBlock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 import static com.example.huge.fzugang.Utils.constantUtil.SUCCESS_CODE;
@@ -59,12 +61,23 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
     String date;
     String price;
     int numOfPeople;
+    @BindView(R.id.block_title)
+    TextView blockTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.carpool_card_create_time)
+    TextView carpoolCardCreateTime;
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.carpool_upload_button:
-                postCarpoolData();
+                String content = carpoolContentEditText.getText().toString();
+                if (content.isEmpty()) {
+                    Toast.makeText(this, "详情不能为空", Toast.LENGTH_SHORT).show();
+                } else {
+                    postCarpoolData(content);
+                }
                 break;
             default:
                 break;
@@ -92,6 +105,7 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
 
     private void init() {
         Intent intent = getIntent();
+        String username = SharedPreferencesUtil.getStoredMessage(this, "username");
         meetPlace = intent.getStringExtra("meetPlace");
         destination = intent.getStringExtra("destination");
         time = intent.getStringExtra("time");
@@ -100,35 +114,42 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
         numOfPeople = intent.getIntExtra("numOfPeople", 0);
         carpoolMainActivityMeetingPlace.setText(meetPlace);
         carpoolMainActivityDestination.setText(destination);
-        carpoolMainActivityTime.setText("见面时间:  "+time);
-        carpoolMainActivityDate.setText("日期: "+date);
-        carpoolMainActivityPrice.setText("约￥"+price);
-        carpoolMainActivityNumOfPeople.setText(Integer.toString(numOfPeople));
+        carpoolMainActivityTime.setText("时间: " + time);
+        carpoolMainActivityDate.setText("日期: " + date);
+        carpoolMainActivityPrice.setText("约￥ " + price);
+        carpoolMainActivityNumOfPeople.setText(numOfPeople + "人待拼");
+        carpoolMainActivityUserName.setText("发起人: "+username);
     }
 
-    private void postCarpoolData() {
-        CarpoolReleasePost post=new CarpoolReleasePost();
-        post.setToken(SharedPreferencesUtil.getStoredMessage(CarpoolContentAddActivity.this,"token"));
+    private void postCarpoolData(String content) {
+        CarpoolReleasePost post = new CarpoolReleasePost();
+        post.setToken(SharedPreferencesUtil.getStoredMessage(CarpoolContentAddActivity.this, "token"));
         post.setMeetPlace(meetPlace);
         post.setDestination(destination);
         post.setTime(time);
         post.setDate(date);
         post.setPrice(price);
         post.setNumOfPeople(Integer.toString(numOfPeople));
-        Gson gson=new Gson();
-        String postJSONData=gson.toJson(post);
-        Log.d("postJSON", "postCarpoolData: "+postJSONData);
-        OkHttpUtil.sendOkHttpRequeat("fdb1.0.0/carpooling/add",postJSONData,new okhttp3.Callback(){
+        post.setContent(content);
+        Gson gson = new Gson();
+        String postJSONData = gson.toJson(post);
+        Log.d("postJSON", "postCarpoolData: " + postJSONData);
+        OkHttpUtil.sendOkHttpRequeat("fdb1.0.0/carpooling/add", postJSONData, new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                CarpoolAddResponse carpoolAddResponse=parseResponse(response.body().string());
-                ActivityCollector.finishAll();
-                if(carpoolAddResponse.getCode()==SUCCESS_CODE){
+                CarpoolAddResponse carpoolAddResponse = parseResponse(response.body().string());
+                if (carpoolAddResponse.getCode() == SUCCESS_CODE) {
                     Log.d("post", "onResponse: succeeded1");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ActivityCollector.finishAll();
+                        }
+                    });
                     showToast("发布成功");
-                }else{
+                } else {
                     Log.d("post", "onResponse: succeeded2");
-                    showToast("发布失败,错误代码:  "+carpoolAddResponse.getCode());
+                    showToast("发布失败,错误代码:  " + carpoolAddResponse.getCode());
                 }
             }
 
@@ -144,14 +165,14 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private CarpoolAddResponse parseResponse(String responseStr) {
-        Gson gson=new Gson();
-        Log.d("response", "parseResponse: "+responseStr);
-        return gson.fromJson(responseStr,CarpoolAddResponse.class);
+        Gson gson = new Gson();
+        Log.d("response", "parseResponse: " + responseStr);
+        return gson.fromJson(responseStr, CarpoolAddResponse.class);
     }
 }

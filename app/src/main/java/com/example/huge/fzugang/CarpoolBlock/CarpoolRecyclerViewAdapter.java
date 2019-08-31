@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 
 import com.example.huge.fzugang.CarpoolBlock.FromJSON.CarpoolListData;
 import com.example.huge.fzugang.R;
@@ -42,27 +40,27 @@ public class CarpoolRecyclerViewAdapter extends RecyclerView.Adapter<CarpoolRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Locale locale= Locale.SIMPLIFIED_CHINESE;
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        Locale locale = Locale.SIMPLIFIED_CHINESE;
         CarpoolListData listData = mCarpoolListData.get(position);
         holder.carpoolMainActivityMeetingPlace.setText(listData.getMeetPlace());
-        holder.carpoolMainActivityTime.setText(listData.getTime());
-        holder.carpoolMainActivityDate.setText(listData.getDate());
-        holder.carpoolMainActivityNumOfPeople.setText(String.format(locale,"%01d人待拼",listData.getNumOfPeople()));
+        holder.carpoolMainActivityTime.setText("时间: " + listData.getTime());
+        holder.carpoolMainActivityDate.setText("日期: " + listData.getDate());
+        holder.carpoolMainActivityNumOfPeople.setText(String.format(locale, "%01d人待拼", listData.getNumOfPeople()));
         holder.carpoolMainActivityDestination.setText(listData.getDestination());
-        holder.carpoolMainActivityUserName.setText(listData.getAuthor());
-        holder.carpoolMainActivityPrice.setText(String.format(locale,"约￥ %s",listData.getPrice()));
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("RV", "onClick: "+holder.getLayoutPosition());
-//                CarpoolListData data = mCarpoolListData.get(holder.getPosition());
-//                Intent intent = new Intent(mContext, CarpoolReleaseActivity.class);
-//                intent.putExtra("carpool_data", data);
-//                mContext.startActivity(intent);
+        holder.carpoolMainActivityUserName.setText("发起人: "+listData.getAuthor());
+        holder.carpoolMainActivityPrice.setText(String.format(locale, "约￥ %s", listData.getPrice()));
+        holder.carpoolCardCreateTime.setText("创建时间: "+listData.getCreateTime());
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CarpoolListData data = mCarpoolListData.get(position);
+                Intent intent = new Intent(mContext, CarpoolDetailActivity.class);
+                intent.putExtra("carpool_list_data", data);
+                mContext.startActivity(intent);
 
-//            }
-//        });
+            }
+        });
     }
 
     @Override
@@ -86,11 +84,13 @@ public class CarpoolRecyclerViewAdapter extends RecyclerView.Adapter<CarpoolRecy
         TextView carpoolMainActivityUserName;
         @BindView(R.id.carpool_main_activity_price)
         TextView carpoolMainActivityPrice;
+        @BindView(R.id.carpool_card_create_time)
+        TextView carpoolCardCreateTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            cardView=(CardView)itemView;
+            cardView = (CardView) itemView;
         }
     }
 }

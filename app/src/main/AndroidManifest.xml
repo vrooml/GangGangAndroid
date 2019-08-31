@@ -26,7 +26,8 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="label"
         tools:targetApi="n">
-        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity"></activity>
+        <activity android:name=".CarpoolBlock.CarpoolDetailActivity"></activity>
+        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity" />
         <activity android:name=".CarpoolBlock.CarpoolBasicAddActivity" />
 
         <provider

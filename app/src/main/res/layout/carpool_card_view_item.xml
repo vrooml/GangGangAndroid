@@ -67,7 +67,7 @@
                     android:scaleType="centerInside"/>
 
                 <TextView
-                    android:id="@+id/carpool_main_activity_num_of_people"
+                    android:id="@+id/carpool_main_activity_time"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/carpool_card_view_arrow"
                     android:layout_marginTop="4dp"
@@ -91,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:text="福大生活一区"/>
 
             </LinearLayout>
 
@@ -102,13 +103,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <TextView
-                android:id="@+id/carpool_main_activity_time"
+                app:layout_widthPercent="25%"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="出发"
+                android:textSize="16sp"
+                android:textColor="@color/qmui_config_color_gray_3"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/carpool_main_activity_num_of_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_margin="4dp"
-                android:textSize="12sp"
-                app:layout_widthPercent="33%"
-                android:textAlignment="center"
-                android:layout_height="wrap_content"/>
+                android:textSize="16sp"
+                android:textColor="@color/qmui_config_color_blue"
+                android:text="待拼28人"/>
+
+            <TextView
+                android:id="@+id/carpool_main_activity_price"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#EB1111"
+                android:textStyle="bold"
+                android:text="约￥ 20"/>
 
         </android.support.percent.PercentRelativeLayout>
         <RelativeLayout
@@ -117,24 +143,22 @@
 
             <TextView
                 android:id="@+id/carpool_main_activity_user_name"
+                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/carpool_main_activity_price"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#EB1111"
-                android:textStyle="bold"/>
+                android:text="发起人:Tars"/>
+
+            <TextView
+                android:id="@+id/carpool_card_create_time"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="创建时间:2019-08-31 10:40:44"
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
