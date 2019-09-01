@@ -30,6 +30,8 @@ public class LostDetailActivity extends AppCompatActivity{
     CircleImageView avatar;
     @BindView(R.id.lost_detail_username)
     TextView username;
+    @BindView(R.id.lost_detail_post_date)
+    TextView postDate;
     @BindView(R.id.lost_detail_post_time)
     TextView postTime;
     @BindView(R.id.lost_detail_content)
@@ -56,6 +58,7 @@ public class LostDetailActivity extends AppCompatActivity{
         title.setText(lostInfo.getTitle());
         lostPlace.setText(lostInfo.getLostPlace());
         lostTime.setText(lostInfo.getLostTime());
+        postDate.setText(lostInfo.getPostDate());
         postTime.setText(lostInfo.getPostTime());
         content.setText(lostInfo.getContent());
         username.setText(lostInfo.getUsername());

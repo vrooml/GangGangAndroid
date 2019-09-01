@@ -2,6 +2,7 @@ package com.example.huge.fzugang.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.huge.fzugang.*;
@@ -11,6 +12,7 @@ import com.example.huge.fzugang.RetrofitStuff.*;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
 import com.example.huge.fzugang.TradeBlock.TradeInfo;
 import com.zyao89.view.zloading.ZLoadingDialog;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +63,63 @@ public class RetrofitUtil{
 
             @Override
             public void onFailure(Call<ResponseModel<String>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //账号登录请求
+    public static void postLogin(final Activity startActivity,final LoginRequest loginRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<String>> call=request.login(loginRequest);
+        call.enqueue(new Callback<ResponseModel<String>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call,Response<ResponseModel<String>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        RetrofitUtil.postUserInfo(response.body().getData());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"phoneNum",loginRequest.getPhone());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"token",response.body().getData());
+                        Intent intent=new Intent(startActivity,MainActivity.class);
+                        startActivity.startActivity(intent);
+                        startActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //退出登录请求
+    public static void postSignOut(final Activity startActivity,final SignOutRequest signOutRequest){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postSignOut(signOutRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.code()==SUCCESS_CODE){
+                    Toast.makeText(MyApplication.getContext(),"退出登录成功",Toast.LENGTH_SHORT).show();
+                    Intent reloginIntent=new Intent(startActivity,LoginActivity.class);
+                    reloginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity.startActivity(reloginIntent);
+                    startActivity.finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
@@ -119,7 +178,6 @@ public class RetrofitUtil{
         });
         return userInfo[0];
     }
-
 
     //注册账号请求
     public static void postRegister(final Activity startActivity,final RegisterRequest registerRequest,final ZLoadingDialog zLoadingDialog){
@@ -193,6 +251,39 @@ public class RetrofitUtil{
         });
     }
 
+    //修改信息请求
+    public static void postChangeInfo(final Activity startActivity,final ChangeInfoRequest changeInfoRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postChangeInfo(changeInfoRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        RetrofitUtil.postUserInfo(response.body().getData().toString());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"gender",changeInfoRequest.getGender());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",changeInfoRequest.getUsername());
+                        Toast.makeText(MyApplication.getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+                        startActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     //修改密码请求
     public static void postForgetPassWord(final Activity startActivity,ForgetPasswordRequest forgetPasswordRequest,final ZLoadingDialog zLoadingDialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
@@ -225,24 +316,17 @@ public class RetrofitUtil{
         });
     }
 
-    //账号登录请求
-    public static void postLogin(final Activity startActivity,final LoginRequest loginRequest,final ZLoadingDialog zLoadingDialog){
+
+    //上传头像请求
+    public static void postUploadAvatar(String token,MultipartBody.Part file){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<String>> call=request.login(loginRequest);
-        call.enqueue(new Callback<ResponseModel<String>>(){
+        Call<ResponseModel> call=request.postUploadAvatar(token,file);
+        call.enqueue(new Callback<ResponseModel>(){
             @Override
-            public void onResponse(Call<ResponseModel<String>> call,Response<ResponseModel<String>> response){
-                if(zLoadingDialog!=null){
-                    zLoadingDialog.dismiss();
-                }
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        RetrofitUtil.postUserInfo(response.body().getData());
-                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"phoneNum",loginRequest.getPhone());
-                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"token",response.body().getData());
-                        Intent intent=new Intent(startActivity,MainActivity.class);
-                        startActivity.startActivity(intent);
-                        startActivity.finish();
+                        Toast.makeText(MyApplication.getContext(),"上传头像成功",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -250,22 +334,17 @@ public class RetrofitUtil{
             }
 
             @Override
-            public void onFailure(Call<ResponseModel<String>> call,Throwable t){
-                if(zLoadingDialog!=null){
-                    zLoadingDialog.dismiss();
-                }
+            public void onFailure(Call<ResponseModel> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
 /*
 二手交易
  */
 
     //请求交易帖子列表
-    public static void postTradeList(final TradeListRequest tradeListRequest,final ZLoadingDialog zLoadingDialog){
+    public static void postTradeList(final TradeFragment tradeFragment,final TradeListRequest tradeListRequest,final ZLoadingDialog zLoadingDialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<TradeInfo[]>> call=request.postTradeList(tradeListRequest);
         call.enqueue(new Callback<ResponseModel<TradeInfo[]>>(){
@@ -280,11 +359,54 @@ public class RetrofitUtil{
                             Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
                         }else{
                             if(tradeListRequest.getPage().equals("1")){
-                                TradeFragment.tradeData.clear();
+                                tradeFragment.tradeData.clear();
                             }
                             for(TradeInfo i:response.body().getData()){
-                                TradeFragment.tradeData.add(i);
+                                tradeFragment.tradeData.add(i);
+                                Log.d("debug","tradeData"+i.getTitle());
                             }
+                            tradeFragment.tradeListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<TradeInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求我的交易帖子列表
+    public static void postMyTradeList(final TradeFragment tradeFragment,final TradeListRequest tradeListRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<TradeInfo[]>> call=request.postMyTradeList(tradeListRequest);
+        call.enqueue(new Callback<ResponseModel<TradeInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<TradeInfo[]>> call,Response<ResponseModel<TradeInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(tradeListRequest.getPage().equals("1")){
+                                tradeFragment.tradeData.clear();
+                            }
+                            for(TradeInfo i:response.body().getData()){
+                                tradeFragment.tradeData.add(i);
+                            }
+                            tradeFragment.tradeListAdapter.notifyDataSetChanged();
                         }
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
@@ -334,6 +456,36 @@ public class RetrofitUtil{
         });
     }
 
+    //请求删除帖子
+    public static void postDeleteTrade(final DeletePostRequest deletePostRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postDeleteTrade(deletePostRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 /*
 失物招领
@@ -360,6 +512,48 @@ public class RetrofitUtil{
                             for(LostInfo i:response.body().getData()){
                                 LostFragment.lostData.add(i);
                             }
+                            LostFragment.lostListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<LostInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求我的失物招领帖子列表
+    public static void postMyLostList(final LostListRequest lostListRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<LostInfo[]>> call=request.postMyLostList(lostListRequest);
+        call.enqueue(new Callback<ResponseModel<LostInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<LostInfo[]>> call,Response<ResponseModel<LostInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(lostListRequest.getPage().equals("1")){
+                                LostFragment.lostData.clear();
+                            }
+                            for(LostInfo i:response.body().getData()){
+                                LostFragment.lostData.add(i);
+                            }
+                            LostFragment.lostListAdapter.notifyDataSetChanged();
                         }
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();

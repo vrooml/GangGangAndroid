@@ -32,7 +32,7 @@
                     android:ellipsize="end"
                     android:text="发布宝贝"
                     android:textColor="@color/qmui_config_color_white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
 
         </android.support.v7.widget.Toolbar>
@@ -61,11 +61,11 @@
             android:id="@+id/add_lost_choose_classify"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60sp">
+            android:layout_height="40sp">
         <Button
                 android:id="@+id/found_classify_button"
                 android:text="拾取失物"
-                android:textSize="17sp"
+                android:textSize="12sp"
                 android:textColor="@color/qmui_config_color_gray_3"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_weight="1"
@@ -74,7 +74,7 @@
         <Button
                 android:id="@+id/lost_classify_button"
                 android:text="寻找失物"
-                android:textSize="17sp"
+                android:textSize="12sp"
                 android:textColor="@color/qmui_config_color_gray_3"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_weight="1"
@@ -83,9 +83,9 @@
     </LinearLayout>
 
     <View
-            android:background="@color/qmui_config_color_gray_3"
+            android:background="@color/qmui_config_color_gray_8"
             android:layout_width="match_parent"
-            android:layout_height="0.5sp"/>
+            android:layout_height="1sp"/>
 
     <RelativeLayout
     android:layout_width="match_parent"
@@ -105,6 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="标题"
+                    android:textSize="14dp"
                     android:background="@drawable/edittext_background"
                     android:maxLines="2" />
         </android.support.design.widget.TextInputLayout>
@@ -121,6 +122,7 @@
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14dp"
                     android:hint="失物详情描述（物品外观、特征等）"
                     android:gravity="left"
                     android:background="@drawable/edittext_background"
@@ -139,6 +141,7 @@
                     android:hint="丢失/拾到地点"
                     android:padding="12dp"
                     android:maxLines="1"
+                    android:textSize="14dp"
                     android:background="@drawable/edittext_background"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
@@ -156,6 +159,7 @@
                     android:hint="丢失/拾到时间"
                     android:padding="12dp"
                     android:maxLines="1"
+                    android:textSize="14dp"
                     android:background="@drawable/edittext_background"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -174,6 +178,7 @@
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14dp"
                     android:hint="联系方式（QQ、邮箱、电话）"
                     android:background="@drawable/edittext_background"
                     android:maxLines="2" />

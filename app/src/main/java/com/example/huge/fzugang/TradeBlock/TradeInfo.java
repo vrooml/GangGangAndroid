@@ -7,6 +7,7 @@ public class TradeInfo{
     private String userId;//发布者id
     private String postDate;//发布时间
     private String postTime;//发布时间
+    private String dateTime;//龚海旭憨憨数据
     private String username;//发布者昵称
     private String title;//标题
     private String content;//详情
@@ -16,11 +17,12 @@ public class TradeInfo{
     private String contact;//联系方式
     private int classify;//类别（暂时没用）
 
-    public TradeInfo(String id,String userId,String postDate,String postTime,String username,String title,String content,String price,List<String> pictureUrls,String fineness,String contact,int classify){
+    public TradeInfo(String id,String userId,String postDate,String postTime,String dateTime,String username,String title,String content,String price,List<String> pictureUrls,String fineness,String contact,int classify){
         this.id=id;
         this.userId=userId;
         this.postDate=postDate;
         this.postTime=postTime;
+        this.dateTime=dateTime;
         this.username=username;
         this.title=title;
         this.content=content;

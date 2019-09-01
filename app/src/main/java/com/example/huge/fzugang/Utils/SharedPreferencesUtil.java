@@ -5,6 +5,16 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesUtil{
 
+    /*
+        authToken:验证码token
+        username:用户名
+        userId:用户id
+        gender:性别
+        phoneNum:手机号
+        token:用户令牌
+     */
+
+
     static SharedPreferences sp;
 
     //获取SharedPreferences存储内容

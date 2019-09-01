@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.MainActivity;
 import com.example.huge.fzugang.MyApplication;
 import com.example.huge.fzugang.R;
 import com.example.huge.fzugang.RetrofitStuff.LostListRequest;
@@ -31,7 +32,7 @@ public class LostFragment extends Fragment{
     RefreshLayout refreshLayout;
     @BindView(R.id.lost_list_view)
     ListView lostListView;
-    LostListAdapter lostListAdapter;
+    public static LostListAdapter lostListAdapter;
     @BindView(R.id.found_list_button)
     Button foundListButton;
     @BindView(R.id.lost_list_button)
@@ -62,13 +63,20 @@ public class LostFragment extends Fragment{
         page=1;
         lostData=new ArrayList<LostInfo>();
         foundListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
-        foundListButton.setTextSize(18);
-        title=getActivity().findViewById(R.id.block_title);
-        title.setText("失物招领");
+        foundListButton.setTextSize(15);
+        if(this.getActivity().getClass().equals(MainActivity.class)){
+            title=getActivity().findViewById(R.id.block_title);
+            title.setText("失物招领");
+        }
         lostListAdapter=new LostListAdapter(this.getContext(),lostData);
         lostListView.setAdapter(lostListAdapter);
-        LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",classify);
-        RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+//        LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",String.valueOf(classify));
+//        if(this.getActivity().getClass().equals(MainActivity.class)){
+//            RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+//        }else{
+//            RetrofitUtil.postMyLostList(lostListRequest,zLoadingDialog);
+//        }
+        lostListAdapter.notifyDataSetChanged();
 
         foundListButton.setOnClickListener(new View.OnClickListener(){
             @SuppressLint("ResourceAsColor")
@@ -78,11 +86,15 @@ public class LostFragment extends Fragment{
                 classify=1;
                 page=1;
                 foundListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
-                foundListButton.setTextSize(18);
+                foundListButton.setTextSize(15);
                 lostListButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
-                lostListButton.setTextSize(15);
-                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",classify);
-                RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                lostListButton.setTextSize(12);
+                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",String.valueOf(classify));
+                if(LostFragment.this.getActivity().getClass().equals(MainActivity.class)){
+                    RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                }else{
+                    RetrofitUtil.postMyLostList(lostListRequest,zLoadingDialog);
+                }
             }
         });
 
@@ -94,13 +106,19 @@ public class LostFragment extends Fragment{
                 classify=0;
                 page=1;
                 lostListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
-                lostListButton.setTextSize(18);
+                lostListButton.setTextSize(15);
                 foundListButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
-                foundListButton.setTextSize(15);
-                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",classify);
-                RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                foundListButton.setTextSize(12);
+                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",String.valueOf(classify));
+                if(LostFragment.this.getActivity().getClass().equals(MainActivity.class)){
+                    RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                }else{
+                    RetrofitUtil.postMyLostList(lostListRequest,zLoadingDialog);
+                }
             }
         });
+
+
     }
 
     private void initRefresh(){
@@ -108,8 +126,12 @@ public class LostFragment extends Fragment{
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page=1;
-                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",classify);
-                RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",String.valueOf(classify));
+                if(LostFragment.this.getActivity().getClass().equals(MainActivity.class)){
+                    RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                }else{
+                    RetrofitUtil.postMyLostList(lostListRequest,zLoadingDialog);
+                }
                 lostListAdapter.notifyDataSetChanged();
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
@@ -117,8 +139,12 @@ public class LostFragment extends Fragment{
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(++page),"10",classify);
-                RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(++page),"10",String.valueOf(classify));
+                if(LostFragment.this.getActivity().getClass().equals(MainActivity.class)){
+                    RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
+                }else{
+                    RetrofitUtil.postMyLostList(lostListRequest,zLoadingDialog);
+                }
                 lostListAdapter.notifyDataSetChanged();
                 refreshlayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
             }

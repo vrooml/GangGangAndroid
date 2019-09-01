@@ -11,7 +11,9 @@
             android:background="@color/qmui_config_color_white"
             app:srlPrimaryColor="@color/basicColor"
             app:srlAccentColor="@android:color/white"
-            app:srlEnablePreviewInEditMode="true">
+            app:srlEnablePreviewInEditMode="true"
+            app:srlHeaderHeight="100dp"
+            app:srlFooterHeight="50dp">
 
         <com.scwang.smartrefresh.header.DropBoxHeader
                 android:layout_width="match_parent"

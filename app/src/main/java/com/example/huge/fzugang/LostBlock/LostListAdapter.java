@@ -52,6 +52,7 @@ public class LostListAdapter extends BaseAdapter{
             viewHolder.titie=convertView.findViewById(R.id.lost_title);
             viewHolder.lostPlace=convertView.findViewById(R.id.lost_place);
             viewHolder.lostTime=convertView.findViewById(R.id.lost_time);
+            viewHolder.postDate=convertView.findViewById(R.id.lost_post_date);
             viewHolder.postTime=convertView.findViewById(R.id.lost_post_time);
             convertView.setTag(viewHolder);
         }else{
@@ -80,6 +81,7 @@ public class LostListAdapter extends BaseAdapter{
         LinearLayout postLayout;
         ImageView postImage;
         TextView titie;
+        TextView postDate;
         TextView postTime;
         TextView lostPlace;
         TextView lostTime;

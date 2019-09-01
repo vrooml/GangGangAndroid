@@ -27,42 +27,44 @@
                     android:layout_height="match_parent"/>
             <RelativeLayout
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginRight="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <TextView
                         android:id="@+id/trade_title"
                         android:text="无标题"
                         android:textStyle="bold"
-                        android:textSize="20dp"
+                        android:textSize="16dp"
                         android:layout_marginTop="10sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_fineness"
                         android:text="99新"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_title"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="12dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_content"
                         android:text="详情"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_fineness"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="180sp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_marginTop="8dp"
+                        android:layout_width="150dp"
+                        android:ellipsize="end"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"/>
                 <TextView
                         android:id="@+id/trade_price_prefix"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="8dp"
                         android:textColor="@color/qmui_config_color_red"
                         android:text="￥"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
@@ -73,7 +75,7 @@
                         android:layout_marginLeft="2dp"
                         android:textColor="@color/qmui_config_color_red"
                         android:text="999.9"
-                        android:textSize="20dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"/>
@@ -82,7 +84,7 @@
                         android:layout_above="@id/trade_post_time_2"
                         android:layout_alignParentRight="true"
                         android:text="2019-8-21"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -91,7 +93,7 @@
                         android:layout_alignBottom="@id/trade_price_prefix"
                         android:layout_alignParentRight="true"
                         android:text="12:15:00"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

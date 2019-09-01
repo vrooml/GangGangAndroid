@@ -11,7 +11,9 @@
             android:background="@color/qmui_config_color_white"
             app:srlPrimaryColor="#9EBCEB"
             app:srlAccentColor="@android:color/white"
-            app:srlEnablePreviewInEditMode="true">
+            app:srlEnablePreviewInEditMode="true"
+            app:srlHeaderHeight="100dp"
+            app:srlFooterHeight="50dp">
 
         <com.scwang.smartrefresh.header.PhoenixHeader
                 app:layout_srlBackgroundColor="@color/qmui_config_color_gray_6"
@@ -24,11 +26,11 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="60sp">
+                    android:layout_height="40sp">
                 <Button
                         android:id="@+id/found_list_button"
                         android:text="拾取失物"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textColor="@color/qmui_config_color_gray_3"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_weight="1"
@@ -37,17 +39,13 @@
                 <Button
                         android:id="@+id/lost_list_button"
                         android:text="寻找失物"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textColor="@color/qmui_config_color_gray_3"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
             </LinearLayout>
-            <View
-                android:background="@color/qmui_config_color_gray_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5sp"/>
 
             <ListView
                     android:id="@+id/lost_list_view"

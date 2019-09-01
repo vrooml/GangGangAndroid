@@ -5,7 +5,9 @@ import java.util.List;
 public class LostInfo{
     private String id;//帖子id
     private String userId;//发布者id
+    private String postDate;//发布日期
     private String postTime;//发布时间
+    private String dateTime;//龚海旭憨憨数据
     private String username;//发布者昵称
     private String title;//标题
     private String content;//详情
@@ -15,10 +17,12 @@ public class LostInfo{
     private List<String> pictureUrls;//物品图片url
     private String contact;//联系方式
 
-    public LostInfo(String id,String userId,String postTime,String username,String title,String content,int classify,String lostTime,String lostPlace,List<String> pictureUrls,String contact){
+    public LostInfo(String id,String userId,String postDate,String postTime,String dateTime,String username,String title,String content,int classify,String lostTime,String lostPlace,List<String> pictureUrls,String contact){
         this.id=id;
         this.userId=userId;
+        this.postDate=postDate;
         this.postTime=postTime;
+        this.dateTime=dateTime;
         this.username=username;
         this.title=title;
         this.content=content;
@@ -115,5 +119,13 @@ public class LostInfo{
 
     public void setClassify(int classify){
         this.classify=classify;
+    }
+
+    public String getPostDate(){
+        return postDate;
+    }
+
+    public void setPostDate(String postDate){
+        this.postDate=postDate;
     }
 }

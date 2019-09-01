@@ -4,9 +4,9 @@ public class LostListRequest{
     private String token;
     private String page;
     private String num;
-    private int classify;
+    private String classify;
 
-    public LostListRequest(String token,String page,String num,int classify){
+    public LostListRequest(String token,String page,String num,String classify){
         this.token=token;
         this.page=page;
         this.num=num;
@@ -37,11 +37,11 @@ public class LostListRequest{
         this.num=num;
     }
 
-    public int getClassify(){
+    public String getClassify(){
         return classify;
     }
 
-    public void setClassify(int classify){
+    public void setClassify(String classify){
         this.classify=classify;
     }
 }

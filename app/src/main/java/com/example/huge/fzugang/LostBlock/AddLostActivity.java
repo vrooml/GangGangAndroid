@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.huge.fzugang.MyApplication.getContext;
 
 public class AddLostActivity extends AppCompatActivity{
     @BindView(R.id.found_classify_button)
@@ -69,11 +73,10 @@ public class AddLostActivity extends AppCompatActivity{
         init();
     }
 
-    @SuppressLint("ResourceAsColor")
     private void init(){
         classify=1;
-        foundClassifyButton.setTextColor(R.color.basicColor);
-        foundClassifyButton.setTextSize(20);
+        foundClassifyButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
+        foundClassifyButton.setTextSize(15);
 
         //设置图片添加adapter
         addPictureAdapter=new AddPictureGridViewAdapter(pictures,this);
@@ -97,17 +100,118 @@ public class AddLostActivity extends AppCompatActivity{
         //先让按钮失效
         addButton.setEnabled(false);
         //设置文本框改变监听
-        title.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,addButton,title,content,lostPlace,lostTime,contact));
-        content.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,addButton,title,content,lostPlace,lostTime,contact));
-        lostPlace.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,addButton,title,content,lostPlace,lostTime,contact));
-        lostTime.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,addButton,title,content,lostPlace,lostTime,contact));
-        contact.getEditText().addTextChangedListener(new FzuGangTextInputWatcher(this,addButton,title,content,lostPlace,lostTime,contact));
+        title.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+                if(title.getEditText().getText().toString().length()==0){
+                    title.setError("请输入内容");
+                    title.setErrorEnabled(true);
+                }else{
+                    title.setErrorEnabled(false);
+                }
+                title.getEditText().getBackground().clearColorFilter();
+                isNullText(title,content,lostTime,lostPlace,contact);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s){
+            }
+        });
+        content.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+                content.getEditText().getBackground().clearColorFilter();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+                if(content.getEditText().getText().toString().length()==0){
+                    content.setError("请输入内容");
+                    content.setErrorEnabled(true);
+                }else{
+                    content.setErrorEnabled(false);
+                }
+                content.getEditText().getBackground().clearColorFilter();
+                isNullText(title,content,lostTime,lostPlace,contact);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s){
+            }
+        });
+        lostPlace.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+                if(lostPlace.getEditText().getText().toString().length()==0){
+                    lostPlace.setError("请输入内容");
+                    lostPlace.setErrorEnabled(true);
+                }else{
+                    lostPlace.setErrorEnabled(false);
+                }
+                lostPlace.getEditText().getBackground().clearColorFilter();
+                isNullText(title,content,lostTime,lostPlace,contact);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s){
+            }
+        });
+        lostTime.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+                if(lostTime.getEditText().getText().toString().length()==0){
+                    lostTime.setError("请输入内容");
+                    lostTime.setErrorEnabled(true);
+                }else{
+                    lostTime.setErrorEnabled(false);
+                }
+                lostTime.getEditText().getBackground().clearColorFilter();
+                isNullText(title,content,lostTime,lostPlace,contact);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s){
+            }
+        });
+        contact.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+                if(contact.getEditText().getText().toString().length()==0){
+                    contact.setError("请输入内容");
+                    contact.setErrorEnabled(true);
+                }else{
+                    contact.setErrorEnabled(false);
+                }
+                contact.getEditText().getBackground().clearColorFilter();
+                isNullText(title,content,lostTime,lostPlace,contact);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s){
+            }
+        });
 
         //发布按钮监听
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
+                String token=SharedPreferencesUtil.getStoredMessage(getContext(),"token");
                 Map<String,RequestBody> lostText=new HashMap<>();
                 RequestBody tokenRequest=RequestBody.create(MediaType.parse("multipart/form-data"),token);
                 RequestBody titleRequest=RequestBody.create(MediaType.parse("multipart/form-data"),title.getEditText().getText().toString());
@@ -134,8 +238,10 @@ public class AddLostActivity extends AppCompatActivity{
             @Override
             public void onClick(View v){
                 classify=1;
-                foundClassifyButton.setTextColor(R.color.basicColor);
-                foundClassifyButton.setTextSize(20);
+                foundClassifyButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
+                foundClassifyButton.setTextSize(15);
+                lostClassifyButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
+                lostClassifyButton.setTextSize(12);
             }
         });
 
@@ -144,8 +250,10 @@ public class AddLostActivity extends AppCompatActivity{
             @Override
             public void onClick(View v){
                 classify=0;
-                lostClassifyButton.setTextColor(R.color.basicColor);
-                lostClassifyButton.setTextSize(20);
+                lostClassifyButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
+                lostClassifyButton.setTextSize(15);
+                foundClassifyButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
+                foundClassifyButton.setTextSize(12);
             }
         });
     }
@@ -160,6 +268,19 @@ public class AddLostActivity extends AppCompatActivity{
                 addPictureAdapter.notifyDataSetChanged(pictures);
             }
         }
+    }
+
+    //是否有文本为空
+    private void isNullText(TextInputLayout... textInputLayouts){
+        boolean enabled=true;
+        for(TextInputLayout i: textInputLayouts){
+            if(i.getEditText().getText().toString().length()==0){
+                addButton.setEnabled(false);
+                enabled=false;
+                break;
+            }
+        }
+        addButton.setEnabled(enabled);
     }
 
     //将contentUri转化为发送请求时的数据结构(发送图片)

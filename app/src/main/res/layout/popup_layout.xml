@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/qmui_config_color_white"
+        android:orientation="vertical"
+        >
+
+    <TextView
+            android:id="@+id/delete_item"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="删除帖子"
+            android:textColor="@color/qmui_config_color_black"/>
+
+</LinearLayout>

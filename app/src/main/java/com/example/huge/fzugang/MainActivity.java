@@ -1,7 +1,9 @@
 package com.example.huge.fzugang;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,8 +24,10 @@ import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.DeliveryBlock.DeliveryFragment;
 import com.example.huge.fzugang.LostBlock.AddLostActivity;
 import com.example.huge.fzugang.LostBlock.LostFragment;
+import com.example.huge.fzugang.RetrofitStuff.SignOutRequest;
 import com.example.huge.fzugang.TradeBlock.AddTradeActivity;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Class mFragmentArray[]={
             LostFragment.class,//失物招领页面
             TradeFragment.class,//二手交易页面
-            DeliveryFragment.class,//代领快递界面
+//            DeliveryFragment.class,//代领快递界面
             CarpoolFragment.class//拼车界面
     };
 
@@ -60,12 +64,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int mImageArray[]={
             R.drawable.tab_lost,
             R.drawable.tab_trade,
-            R.drawable.tab_delivery,
+//            R.drawable.tab_delivery,
             R.drawable.tab_carpool
     };
 
     //tab栏的字
-    private String mTextArray[]={"失物招领","二手交易","代领快递","拼车"};
+    private String mTextArray[]={"失物招领"
+                                ,"二手交易"
+//                                ,"代领快递"
+                                ,"拼车"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -122,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view){
                 Intent intent=new Intent(MainActivity.this,PerfectionInfoActivity.class);
+                intent.putExtra("sourceClass",PerfectionInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -200,8 +208,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
         Intent intent;
         switch(menuItem.getItemId()){
+            case R.id.my_post_item:
+                Intent menuIntent=new Intent(MainActivity.this,MyPostActivity.class);
+                startActivity(menuIntent);
+                break;
             case R.id.feed_item:
 
+                break;
+            case R.id.sign_out_item:
+                //清除登录信息
+                SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("FzuGang", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.commit();
+                //发送退出登录请求
+                SignOutRequest signOutRequest=new SignOutRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
+                RetrofitUtil.postSignOut(MainActivity.this,signOutRequest);
                 break;
         }
         return false;

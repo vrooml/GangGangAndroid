@@ -24,6 +24,10 @@ public interface PostInterfaces{
     @POST("/fdb1.0.0/user/info/fill")
     Call<ResponseModel> postPerfection(@Body PerfectionRequest perfectionRequest);
 
+    //请求修改信息
+    @POST("/fdb1.0.0/user/info/update")
+    Call<ResponseModel> postChangeInfo(@Body ChangeInfoRequest changeInfoRequest);
+
     //请求修改密码
     @POST("/fdb1.0.0/user/info/update/password")
     Call<ResponseModel> postForgetPassword(@Body ForgetPasswordRequest forgetPasswordRequest);
@@ -40,9 +44,22 @@ public interface PostInterfaces{
     @POST("/fdb1.0.0/user/login")
     Call<ResponseModel<String>> login(@Body LoginRequest loginRequest);
 
+    //退出登录请求
+    @POST("/fdb1.0.0/user/out")
+    Call<ResponseModel> postSignOut(@Body SignOutRequest signOutRequest);
+
+    //请求上传头像
+    @Multipart
+    @POST("/fdb1.0.0/user/info/upload/avatar")
+    Call<ResponseModel> postUploadAvatar(@Part("token") String token,@Part() MultipartBody.Part avatar);
+
     //请求交易帖子列表
     @POST("/fdb1.0.0/trade/list")
     Call<ResponseModel<TradeInfo[]>> postTradeList(@Body TradeListRequest tradeListRequest);
+
+    //请求我的交易帖子列表
+    @POST("/fdb1.0.0/trade/me")
+    Call<ResponseModel<TradeInfo[]>> postMyTradeList(@Body TradeListRequest tradeListRequest);
 
     //请求发布交易
     @Multipart
@@ -50,14 +67,26 @@ public interface PostInterfaces{
     Call<ResponseModel> postAddTrade(@PartMap Map<String,RequestBody> tradeText,
                                      @Part List<MultipartBody.Part> tradePic);
 
+    //请求删除交易帖子
+    @POST("/fdb1.0.0/trade/del")
+    Call<ResponseModel> postDeleteTrade(@Body DeletePostRequest deletePostRequest);
+
     //请求失物招领帖子列表
     @POST("/fdb1.0.0/lostProperty/list")
     Call<ResponseModel<LostInfo[]>> postLostList(@Body LostListRequest lostListRequest);
+
+    //请求我的失物招领帖子列表
+    @POST("/fdb1.0.0/lostProperty/list")
+    Call<ResponseModel<LostInfo[]>> postMyLostList(@Body LostListRequest lostListRequest);
 
     //请求发布失物招领
     @Multipart
     @POST("/fdb1.0.0/lostProperty/add")
     Call<ResponseModel> postAddLost(@PartMap Map<String,RequestBody> lostText,
                                      @Part List<MultipartBody.Part> lostPic);
+
+    //请求删除交易帖子
+    @POST("/fdb1.0.0/lostProperty/del")
+    Call<ResponseModel> postDeleteLost(@Body DeletePostRequest deletePostRequest);
 
 }

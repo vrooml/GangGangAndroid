@@ -31,6 +31,8 @@ public class TradeDetailActivity extends AppCompatActivity{
     CircleImageView avatar;
     @BindView(R.id.trade_detail_username)
     TextView username;
+    @BindView(R.id.trade_detail_post_date)
+    TextView postDate;
     @BindView(R.id.trade_detail_post_time)
     TextView postTime;
     @BindView(R.id.trade_detail_content)
@@ -55,11 +57,11 @@ public class TradeDetailActivity extends AppCompatActivity{
     private void init(){
         position=(int)getIntent().getSerializableExtra("position");
         tradeInfo=TradeFragment.tradeData.get(position);
-        Log.d("debug","init: tradeInfo"+tradeInfo.getTitle());
         title.setText(tradeInfo.getTitle());
         fineness.setText(tradeInfo.getFineness());
         price.setText(tradeInfo.getPrice());
-        postTime.setText(tradeInfo.getPostDate());
+        postDate.setText(tradeInfo.getPostDate());
+        postTime.setText(tradeInfo.getPostTime());
         content.setText(tradeInfo.getContent());
         username.setText(tradeInfo.getUsername());
         contact.setText(tradeInfo.getContact());
