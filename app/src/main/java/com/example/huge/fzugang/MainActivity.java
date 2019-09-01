@@ -20,6 +20,7 @@ import android.view.*;
 import android.widget.*;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolBasicAddActivity;
 import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.DeliveryBlock.DeliveryFragment;
 import com.example.huge.fzugang.LostBlock.AddLostActivity;
@@ -168,10 +169,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent=new Intent(MainActivity.this,AddTradeActivity.class);
                     startActivity(intent);
                 }
-//                else if(getVisibleFragment() instanceof CarpoolFragment){
-//                    Intent intent=new Intent(MainActivity.this,AddCarpoolActivity.class);
-//                    startActivity(intent);
-//                }
+                else if(getVisibleFragment() instanceof CarpoolFragment){
+                    Intent intent=new Intent(MainActivity.this, CarpoolBasicAddActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

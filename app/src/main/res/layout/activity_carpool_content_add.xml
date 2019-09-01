@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/qmui_topbar_height"
+        android:fitsSystemWindows="true"
+        android:gravity="center"
+        android:background="@color/basicColor"
+        app:contentInsetStart="0dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <TextView
+            android:id="@+id/block_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:text="发布拼车信息"
+            android:textColor="@color/qmui_config_color_white"
+            android:textSize="20sp" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <include layout="@layout/carpool_card_view_item"/>
+    <!--<androidx.cardview.widget.CardView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="4dp"-->
+    <!--app:cardCornerRadius="4dp">-->
+    <EditText
+        android:id="@+id/carpool_content_edit_text"
+        android:singleLine="false"
+        android:gravity="left|top"
+        android:background="@drawable/edittext_background"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:padding="12dp"
+        android:clickable="true"
+        android:hint="点击此处输入拼车详情,您可留下联系方式,方便联系。注意保护隐私。"/>
+
+    <!--</androidx.cardview.widget.CardView>-->
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        android:id="@+id/carpool_upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp"
+        android:text="发布我的拼车信息"
+        app:qmui_isRadiusAdjustBounds="true"/>
+</LinearLayout>

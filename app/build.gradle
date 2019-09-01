@@ -67,4 +67,15 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     //弹出菜单
     implementation 'com.github.razerdp:BasePopup:2.2.1'
+
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    //percentLayout
+
+    implementation 'com.android.support:percent:28.0.0'
+    implementation 'org.jetbrains:annotations-java5:15.0'
+
+    //时间、日期选择器
+    implementation 'com.contrarywind:Android-PickerView:4.1.8'
 }
