@@ -62,6 +62,9 @@
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PerfectionInfoActivity" />
+        <activity android:name=".CarpoolBlock.CarpoolBasicAddActivity"/>
+        <activity android:name=".CarpoolBlock.CarpoolDetailActivity"/>
+        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity"/>
     </application>
 
 </manifest>

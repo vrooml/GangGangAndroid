@@ -65,8 +65,10 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
     TextView blockTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.carpool_card_create_time)
-    TextView carpoolCardCreateTime;
+    @BindView(R.id.carpool_card_post_date)
+    TextView carpoolCardPostDate;
+    @BindView(R.id.carpool_card_post_time)
+    TextView carpoolCardPostTime;
 
     @Override
     public void onClick(View view) {
@@ -116,9 +118,9 @@ public class CarpoolContentAddActivity extends AppCompatActivity implements View
         carpoolMainActivityDestination.setText(destination);
         carpoolMainActivityTime.setText("时间: " + time);
         carpoolMainActivityDate.setText("日期: " + date);
-        carpoolMainActivityPrice.setText("约￥ " + price);
+        carpoolMainActivityPrice.setText(price);
         carpoolMainActivityNumOfPeople.setText(numOfPeople + "人待拼");
-        carpoolMainActivityUserName.setText("发起人: "+username);
+        carpoolMainActivityUserName.setText(username);
     }
 
     private void postCarpoolData(String content) {
