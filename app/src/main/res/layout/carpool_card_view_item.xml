@@ -1,11 +1,12 @@
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<www.linwg.org.lib.LCardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:padding="30dp"
-    app:cardCornerRadius="4dp">
+    app:cornerRadius="8dp"
+    app:shadowSize="10dp"
+    app:shadowFluidShape="linear"
+    app:shadowStartAlpha="30"
+    android:foreground="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--最外层总体线性布局-->
     <LinearLayout
@@ -31,7 +32,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:text="福大生活一区"/>
@@ -48,32 +49,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/carpool_main_activity_date"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="12dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="日期: 2019-8-29"/>
+                    <TextView
+                        android:id="@+id/carpool_main_activity_date"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="日期: 2019-8-29"
+                        android:textSize="12sp"/>
 
-                <ImageView
-                    android:id="@+id/carpool_card_view_arrow"
-                    android:layout_width="match_parent"
-                    android:layout_height="12dp"
-                    android:layout_below="@+id/carpool_main_activity_date"
-                    android:layout_marginTop="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/point_arrow"
-                    android:scaleType="centerInside"/>
+                    <ImageView
+                        android:id="@+id/carpool_card_view_arrow"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_below="@+id/carpool_main_activity_date"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:scaleType="center"
+                        android:src="@drawable/point_arrow" />
 
-                <TextView
-                    android:id="@+id/carpool_main_activity_time"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/carpool_card_view_arrow"
-                    android:layout_marginTop="4dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="时间：22:04"/>
+                    <TextView
+                        android:id="@+id/carpool_main_activity_time"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/carpool_card_view_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="时间：22:04"
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -89,7 +93,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:text="福大生活一区"/>
@@ -109,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="出发"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:textColor="@color/qmui_config_color_gray_3"
                 android:textAlignment="center"/>
             <TextView
@@ -118,47 +122,72 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="4dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/qmui_config_color_blue"
                 android:text="待拼28人"/>
+
+            <TextView
+                android:layout_toLeftOf="@+id/carpool_main_activity_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                android:textColor="#EB1111"
+                android:text="约￥ "/>
 
             <TextView
                 android:id="@+id/carpool_main_activity_price"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textColor="#EB1111"
                 android:textStyle="bold"
-                android:text="约￥ 20"/>
+                android:text="20"/>
 
         </android.support.percent.PercentRelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/carpool_user_img"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/avatar_boy"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/qmui_config_color_blue"/>
             <TextView
                 android:id="@+id/carpool_main_activity_user_name"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/carpool_user_img"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发起人:Tars"/>
+                android:text="Tars"/>
 
             <TextView
-                android:id="@+id/carpool_card_create_time"
+                android:id="@+id/carpool_card_post_date"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="创建时间:2019-08-31 10:40:44"
-                android:layout_alignParentRight="true"/>
+                android:textSize="12sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp" />
+            <TextView
+                android:id="@+id/carpool_card_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/carpool_card_post_date"
+                android:textSize="12sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"/>
         </RelativeLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+</www.linwg.org.lib.LCardView>
+

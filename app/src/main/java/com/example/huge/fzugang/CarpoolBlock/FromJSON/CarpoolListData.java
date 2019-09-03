@@ -7,7 +7,9 @@ public class CarpoolListData implements Serializable {
     private int userId;
     private String username;
     private String content;
-    private String createTime;
+    private String dateTime;
+    private String postDate;
+    private String postTime;
     private String author;
     private String date;
     private String time;
@@ -40,12 +42,12 @@ public class CarpoolListData implements Serializable {
         this.content = content;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getPostDate() {
+        return postDate;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
     }
 
     public String getAuthor() {
@@ -110,5 +112,21 @@ public class CarpoolListData implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
     }
 }

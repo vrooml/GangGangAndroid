@@ -38,8 +38,10 @@ public class CarpoolDetailActivity extends AppCompatActivity {
     TextView carpoolMainActivityPrice;
     @BindView(R.id.carpool_detail_content)
     TextView carpoolDetailContent;
-    @BindView(R.id.carpool_card_create_time)
-    TextView carpoolCardCreateTime;
+    @BindView(R.id.carpool_card_post_date)
+    TextView carpoolCardPostDate;
+    @BindView(R.id.carpool_card_post_time)
+    TextView carpoolCardPostTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +62,10 @@ public class CarpoolDetailActivity extends AppCompatActivity {
         carpoolMainActivityTime.setText("时间: " + carpoolListData.getTime());
         carpoolMainActivityDestination.setText(carpoolListData.getDestination());
         carpoolMainActivityNumOfPeople.setText(carpoolListData.getNumOfPeople() + "人待拼");
-        carpoolMainActivityUserName.setText("发起人: " + carpoolListData.getAuthor());
-        carpoolMainActivityPrice.setText("约￥ " + carpoolListData.getPrice());
-        carpoolCardCreateTime.setText("创建时间"+carpoolListData.getCreateTime());
+        carpoolMainActivityUserName.setText(carpoolListData.getAuthor());
+        carpoolMainActivityPrice.setText(carpoolListData.getPrice());
+        carpoolCardPostDate.setText("创建时间: " + carpoolListData.getPostDate());
+        carpoolCardPostTime.setText(carpoolListData.getPostTime());
 
 
         carpoolDetailContent.setText(carpoolListData.getContent());
