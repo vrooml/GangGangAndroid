@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import cc.shinichi.library.ImagePreview;
 import com.bumptech.glide.Glide;
 import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.TradeBlock.TradeDetailActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
@@ -71,20 +72,26 @@ public class LostDetailActivity extends AppCompatActivity{
     }
 
     private void initBanner(){
-        banner.setImageLoader(new GlideImageLoader())
-                .setImages(lostInfo.getPictureUrls())
-                .setOnBannerListener(new OnBannerListener(){
-                    @Override
-                    public void OnBannerClick(int position){
-                        ImagePreview.getInstance()
-                                .setContext(LostDetailActivity.this)
-                                .setIndex(0)
-                                .setImageList(lostInfo.getPictureUrls())
-                                .start();
-                    }
-                })
-                .isAutoPlay(false)
-                .start();
+        if(lostInfo.getPictureUrls()!=null){
+            banner.setImageLoader(new GlideImageLoader())
+                    .setImages(lostInfo.getPictureUrls())
+                    .setOnBannerListener(new OnBannerListener(){
+                        @Override
+                        public void OnBannerClick(int position){
+                            ImagePreview.getInstance()
+                                    .setContext(LostDetailActivity.this)
+                                    .setIndex(0)
+                                    .setImageList(lostInfo.getPictureUrls())
+                                    .start();
+                        }
+                    })
+                    .isAutoPlay(false)
+                    .start();
+        }else{
+            banner.setImageLoader(new LostDetailActivity.GlideImageLoader())
+                    .isAutoPlay(false)
+                    .start();
+        }
     }
 
 

@@ -14,6 +14,7 @@ import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.MyPopup;
 import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
+import com.zyao89.view.zloading.ZLoadingDialog;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 
@@ -97,13 +98,12 @@ public class TradeListAdapter extends BaseAdapter{
                     QuickPopupBuilder.with(getContext())
                             .contentView(R.layout.popup_layout)
                             .config(new QuickPopupConfig()
-                                    .blurBackground(true)
-                                    .gravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL)
-                                    .withClick(R.id.delete_item, new View.OnClickListener() {
+                                    .gravity(Gravity.CENTER_VERTICAL)
+                                    .withClick(R.id.delete_item,new View.OnClickListener(){
                                         @Override
-                                        public void onClick(View v) {
+                                        public void onClick(View v){
                                             DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
-                                            RetrofitUtil.postDeleteTrade(deletePostRequest,LoadingdialogUtil.getZLoadingDialog(getContext()));
+                                            RetrofitUtil.postDeleteTrade(deletePostRequest);
                                         }
                                     }))
                             .show(v);

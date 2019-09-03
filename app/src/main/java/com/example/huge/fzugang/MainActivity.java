@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view){
                 Intent intent=new Intent(MainActivity.this,PerfectionInfoActivity.class);
-                intent.putExtra("sourceClass",PerfectionInfoActivity.class);
+                intent.putExtra("sourceClass",MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -164,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                else if(getVisibleFragment() instanceof DeliveryFragment){
 //                    Intent intent=new Intent(MainActivity.this,AddDeliveryActivity.class);
 //                    startActivity(intent);
-//                }else
-                if(getVisibleFragment() instanceof TradeFragment){
+//                }
+                else if(getVisibleFragment() instanceof TradeFragment){
                     Intent intent=new Intent(MainActivity.this,AddTradeActivity.class);
                     startActivity(intent);
                 }

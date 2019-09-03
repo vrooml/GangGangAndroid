@@ -34,33 +34,33 @@
                         android:id="@+id/lost_title"
                         android:text="无标题"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:layout_marginTop="10sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/lost_place_prefix"
                         android:text="地点："
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/lost_title"
-                        android:layout_marginTop="12sp"
+                        android:layout_marginTop="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/lost_place"
                         android:text="福大教学楼西三"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_2"
                         android:layout_toRightOf="@id/lost_place_prefix"
                         android:layout_below="@id/lost_title"
-                        android:layout_marginTop="12sp"
+                        android:layout_marginTop="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/lost_time_prefix"
                         android:text="时间："
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/lost_place_prefix"
                         android:layout_marginTop="8sp"
@@ -69,7 +69,7 @@
                 <TextView
                         android:id="@+id/lost_time"
                         android:text="上午第二节课下课后"
-                        android:textSize="12sp"
+                        android:textSize="12dp"
                         android:textColor="@color/qmui_config_color_gray_2"
                         android:layout_toRightOf="@id/lost_time_prefix"
                         android:layout_below="@id/lost_place"
@@ -82,7 +82,7 @@
                         android:layout_above="@id/lost_post_time"
                         android:layout_alignParentRight="true"
                         android:text="2019-8-21"
-                        android:textSize="8sp"
+                        android:textSize="10dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -93,7 +93,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="6dp"
                         android:text="12:15:00"
-                        android:textSize="8sp"
+                        android:textSize="10dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

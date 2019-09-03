@@ -45,7 +45,8 @@
             <com.youth.banner.Banner
                     android:id="@+id/trade_detail_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="320sp"/>
+                    app:banner_default_image="@drawable/default_picture"
+                    android:layout_height="300sp"/>
 
             <RelativeLayout
                     android:id="@+id/trade_detail_post_layout"
@@ -80,12 +81,11 @@
                     <TextView
                             android:id="@+id/trade_detail_price"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginBottom="2sp"
                             android:layout_toRightOf="@id/trade_detail_price_prefix"
                             android:layout_marginLeft="2sp"
                             android:textColor="@color/qmui_config_color_red"
                             android:text="0"
-                            android:textSize="20dp"
+                            android:textSize="22dp"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -107,7 +107,7 @@
                     android:id="@+id/trade_detail_divider_1"
                     android:layout_marginTop="10sp"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_below="@id/trade_detail_info"
                     android:background="@color/qmui_config_color_gray_9"/>
 
@@ -120,12 +120,12 @@
                     android:layout_marginLeft="15sp"
                     android:layout_marginRight="15sp"
                     android:text="详情"
-                    android:textSize="18dp"/>
+                    android:textSize="14dp"/>
             <TextView
                     android:id="@+id/trade_detail_content"
                     android:text="宝贝内容详情"
-                    android:textSize="16sp"
-                    android:layout_marginTop="15dp"
+                    android:textSize="18sp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="15sp"
                     android:layout_marginRight="15sp"
                     android:layout_below="@id/trade_detail_content_prefix"
@@ -136,7 +136,7 @@
                     android:id="@+id/trade_detail_divider"
                     android:layout_marginTop="20sp"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:background="@color/qmui_config_color_gray_9"/>
             <RelativeLayout
                     android:id="@+id/trade_detail_post_info_layout"
@@ -150,18 +150,18 @@
                         android:src="@drawable/avatar_boy"
                         app:civ_border_width="2dp"
                         app:civ_border_color="@color/basicColor"
+                        android:layout_alignParentLeft="true"
                         android:layout_width="50sp"
                         android:layout_marginRight="10sp"
-                        android:layout_height="50sp"
-                        android:layout_toLeftOf="@id/trade_detail_username"/>
+                        android:layout_height="50sp"/>
 
                 <TextView
                         android:id="@+id/trade_detail_username"
                         android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
                         android:layout_marginTop="12sp"
                         android:text="用户名"
                         android:textSize="16sp"
+                        android:layout_toRightOf="@id/trade_detail_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
@@ -169,7 +169,7 @@
                         android:text="联系方式："
                         android:textSize="15sp"
                         android:layout_marginTop="6sp"
-                        android:layout_toLeftOf="@id/trade_detail_contact"
+                        android:layout_alignParentLeft="true"
                         android:layout_below="@id/trade_detail_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -177,15 +177,15 @@
                         android:id="@+id/trade_detail_contact"
                         android:layout_below="@id/trade_detail_avatar"
                         android:layout_alignTop="@id/trade_detail_contact_prefix"
+                        android:layout_toRightOf="@id/trade_detail_contact_prefix"
                         android:text="782870819@qq.com"
                         android:textSize="15sp"
-                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_detail_post_date"
                         android:text="2019-8-21"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_detail_contact_prefix"
                         android:layout_width="wrap_content"
@@ -195,7 +195,7 @@
                 <TextView
                         android:id="@+id/trade_detail_post_time"
                         android:text="08:30:00"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_detail_post_date"
                         android:layout_width="wrap_content"

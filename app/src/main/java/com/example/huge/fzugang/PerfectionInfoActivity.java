@@ -76,66 +76,9 @@ public class PerfectionInfoActivity extends AppCompatActivity{
         selectGender=false;
         correctUserName=false;
         uploadAvatar=false;
-        //上传头像监听
-        perfectionAvatar.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Matisse.from(PerfectionInfoActivity.this)
-                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
-                        .countable(false)//true:选中后显示数字;false:选中后显示对号
-                        .maxSelectable(1)//可选的最大数
-                        .capture(true)//选择照片时，是否显示拍照
-                        .captureStrategy(new CaptureStrategy(true,"PhotoPicker"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-                        .imageEngine(new GlideEngine())//图片加载引擎
-                        .forResult(1);
-            }
-        });
-        //设置用户名改变监听
-        perfectionUsernameEdit.getEditText().addTextChangedListener(new TextWatcher(){
-            @Override
-            public void beforeTextChanged(CharSequence s,int start,int count,int after){
-            }
-            @Override
-            public void onTextChanged(CharSequence s,int start,int before,int count){
-            }
-            @Override
-            public void afterTextChanged(Editable s){
-                correctUserName=true;
-                if(correctUserName&&correctPassword&&selectGender){
-                    perfectionButton.setEnabled(true);
-                }else{
-                    perfectionButton.setEnabled(false);
-                }
-            }
-        });
-        //选择男监听
-        perfectionBoyButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(gender!=null&&gender.equals("女")){
-                    perfectionGirlButton.setImageResource(R.drawable.girl_unselect_icon);
-                }
-                perfectionBoyButton.setImageResource(R.drawable.boy_icon);
-                gender="男";
-                selectGender=true;
-            }
-        });
-
-        //选择女监听
-        perfectionGirlButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(gender!=null&&gender.equals("男")){
-                    perfectionBoyButton.setImageResource(R.drawable.boy_unselect_icon);
-                }
-                perfectionGirlButton.setImageResource(R.drawable.girl_icon);
-                gender="女";
-                selectGender=true;
-            }
-        });
 
         //修改信息界面
-        if(getIntent().getSerializableExtra("sourceClass")==MainActivity.class){
+        if(getIntent().getSerializableExtra("sourceClass").equals(MainActivity.class)){
             correctPassword=true;
             //修改标题
             perfectionTitle.setText("修改信息");
@@ -153,7 +96,7 @@ public class PerfectionInfoActivity extends AppCompatActivity{
                 selectGender=true;
             }
             //加载用户名
-            perfectionUsernameEdit.getEditText().setText(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
+            perfectionUsernameEdit.setHint("原昵称："+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
             perfectionPasswordEdit.setVisibility(View.GONE);
             //设置确定键监听
             perfectionButton.setOnClickListener(new View.OnClickListener(){
@@ -218,6 +161,68 @@ public class PerfectionInfoActivity extends AppCompatActivity{
             });
         }
 
+        //上传头像监听
+        perfectionAvatar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Matisse.from(PerfectionInfoActivity.this)
+                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
+                        .countable(false)//true:选中后显示数字;false:选中后显示对号
+                        .maxSelectable(1)//可选的最大数
+                        .capture(true)//选择照片时，是否显示拍照
+                        .captureStrategy(new CaptureStrategy(true,"PhotoPicker"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                        .imageEngine(new GlideEngine())//图片加载引擎
+                        .forResult(1);
+            }
+        });
+        //设置用户名改变监听
+        perfectionUsernameEdit.getEditText().addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s,int start,int count,int after){
+            }
+            @Override
+            public void onTextChanged(CharSequence s,int start,int before,int count){
+            }
+            @Override
+            public void afterTextChanged(Editable s){
+                if(perfectionUsernameEdit.getEditText().getText().length()==0){
+                    perfectionUsernameEdit.setError("昵称不能为空");
+                    perfectionUsernameEdit.setErrorEnabled(true);
+                }else{
+                    correctUserName=true;
+                }
+                if(correctUserName&&correctPassword&&selectGender){
+                    perfectionButton.setEnabled(true);
+                }else{
+                    perfectionButton.setEnabled(false);
+                }
+            }
+        });
+        //选择男监听
+        perfectionBoyButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(gender!=null&&gender.equals("女")){
+                    perfectionGirlButton.setImageResource(R.drawable.girl_unselect_icon);
+                }
+                perfectionBoyButton.setImageResource(R.drawable.boy_icon);
+                gender="男";
+                selectGender=true;
+            }
+        });
+
+        //选择女监听
+        perfectionGirlButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(gender!=null&&gender.equals("男")){
+                    perfectionBoyButton.setImageResource(R.drawable.boy_unselect_icon);
+                }
+                perfectionGirlButton.setImageResource(R.drawable.girl_icon);
+                gender="女";
+                selectGender=true;
+            }
+        });
     }
 
     @Override

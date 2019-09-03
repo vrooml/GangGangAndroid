@@ -45,6 +45,16 @@
         </activity>
         <activity android:name=".TradeBlock.TradeDetailActivity">
         </activity>
+        <activity android:name=".LostBlock.AddLostActivity">
+        </activity>
+        <activity android:name=".LostBlock.LostDetailActivity">
+        </activity>
+        <activity android:name=".CarpoolBlock.CarpoolBasicAddActivity">
+        </activity>
+        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity">
+        </activity>
+        <activity android:name=".CarpoolBlock.CarpoolDetailActivity">
+        </activity>
 
         <activity
             android:name=".WelcomeActivity"

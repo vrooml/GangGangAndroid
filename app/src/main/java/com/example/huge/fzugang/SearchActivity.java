@@ -1,4 +1,4 @@
-package com.example.huge.fzugang.TradeBlock;
+package com.example.huge.fzugang;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.LostBlock.LostInfo;
+import com.example.huge.fzugang.LostBlock.LostListAdapter;
 import com.example.huge.fzugang.MyApplication;
 import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.TradeBlock.TradeInfo;
+import com.example.huge.fzugang.TradeBlock.TradeListAdapter;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -20,20 +24,26 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class TradeSearchActivity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity{
    private Toolbar toolbar;
-    public static ArrayList<TradeInfo> data;
+    public static ArrayList<TradeInfo> tradeData;
+    public static ArrayList<LostInfo> lostData;
+    public static ArrayList<CarpoolInfo> carpoolData;
     public static ListView searchList;
     public static TradeListAdapter tradeListAdapter;
+    public static LostListAdapter lostListAdapter;
+    public static CarpoolAdapter carpoolListAdapter;
+    public static
     @BindView(R.id.search_editText)
     EditText searchEditText;
     @BindView(R.id.search_button)
     Button searchButton;
-    public static TextView title;
+    @BindView(R.id.search_block_title)
+    TextView title;
 
     public static int page=1;
-    public static int classify=-1;
     public static String keyWord="";
+    private int block;
 
 
     @Override
@@ -45,13 +55,35 @@ public class TradeSearchActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
-        title=findViewById(R.id.toolbar_title);
+        //获取来源版块
+        block=Integer.parseInt(getIntent().getSerializableExtra("sourceFragment").toString());
+        init();
+    }
 
-        //设置list
+    private void init(){
         searchList=findViewById(R.id.search_listview);
-        data=new ArrayList<>();
-        tradeListAdapter=new TradeListAdapter(this,data);
-        searchList.setAdapter(tradeListAdapter);
+        //设置标题
+        if(block==0){
+            title.setText("失物招领");
+        }else if(block==1){
+            title.setText("二手交易");
+        }else if(block==2){
+            title.setText("拼车服务");
+        }
+        //设置list
+        if(block==0){
+            lostData=new ArrayList<>();
+            lostListAdapter=new LostListAdapter(this,lostData);
+            searchList.setAdapter(lostListAdapter);
+        }else if(block==1){
+            tradeData=new ArrayList<>();
+            tradeListAdapter=new TradeListAdapter(this,tradeData);
+            searchList.setAdapter(tradeListAdapter);
+        }else if(block==2){
+            carpoolData=new ArrayList<>();
+            carpoolListAdapter=new CarpoolListAdapter(this,carpoolData);
+            searchList.setAdapter(carpoolListAdapter);
+        }
 
         searchEditText.addTextChangedListener(new TextWatcher(){
             @Override
@@ -66,11 +98,7 @@ public class TradeSearchActivity extends AppCompatActivity{
 
             @Override
             public void afterTextChanged(Editable editable){
-                try{
-                    keyWord=URLEncoder.encode(searchEditText.getText().toString().trim(),"utf-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
+                keyWord=searchEditText.getText().toString();
             }
         });
 
@@ -78,12 +106,18 @@ public class TradeSearchActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 if(keyWord.equals("")){
-                    Toast.makeText(searchList.getContext(),"查询词不能为空哦~",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(searchList.getContext(),"查询词不能为空",Toast.LENGTH_SHORT).show();
                 }else{
-                    data.clear();
+                    if(block==0){
+                        lostData.clear();
+                    }else if(block==1){
+                        tradeData.clear();
+                    }else if(block==2){
+                        carpoolData.clear();
+                    }
                     String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
                     ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
-//                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,keyWord,String.valueOf(classify),"1");
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,keyWord,String.valueOf(classify),String.valueOf(page));
 //                    RetrofitUtil.postSearchPost(searchList.getContext(),postSearchRequest,data,zLoadingDialog);
                 }
             }

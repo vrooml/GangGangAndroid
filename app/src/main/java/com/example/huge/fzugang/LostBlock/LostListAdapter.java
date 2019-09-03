@@ -2,15 +2,24 @@ package com.example.huge.fzugang.LostBlock;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.example.huge.fzugang.MyPostActivity;
 import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.RetrofitStuff.DeletePostRequest;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
+import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
 
 import java.util.ArrayList;
+
+import static com.example.huge.fzugang.MyApplication.getContext;
 
 public class LostListAdapter extends BaseAdapter{
     private Context context;
@@ -73,6 +82,28 @@ public class LostListAdapter extends BaseAdapter{
                 context.startActivity(intent);
             }
         });
+
+        //长按弹出删除帖子
+        if(context.getClass().equals(MyPostActivity.class)){
+            viewHolder.postLayout.setOnLongClickListener(new View.OnLongClickListener(){
+                @Override
+                public boolean onLongClick(View v){
+                    QuickPopupBuilder.with(getContext())
+                            .contentView(R.layout.popup_layout)
+                            .config(new QuickPopupConfig()
+                                    .gravity(Gravity.CENTER_VERTICAL)
+                                    .withClick(R.id.delete_item,new View.OnClickListener(){
+                                        @Override
+                                        public void onClick(View v){
+                                            DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
+                                            RetrofitUtil.postDeleteLost(deletePostRequest);
+                                        }
+                                    }))
+                            .show(v);
+                    return false;
+                }
+            });
+        }
 
         return convertView;
     }

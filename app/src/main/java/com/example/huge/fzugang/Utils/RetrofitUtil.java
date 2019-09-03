@@ -457,15 +457,12 @@ public class RetrofitUtil{
     }
 
     //请求删除帖子
-    public static void postDeleteTrade(final DeletePostRequest deletePostRequest,final ZLoadingDialog zLoadingDialog){
+    public static void postDeleteTrade(final DeletePostRequest deletePostRequest){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel> call=request.postDeleteTrade(deletePostRequest);
         call.enqueue(new Callback<ResponseModel>(){
             @Override
             public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
-                if(zLoadingDialog!=null){
-                    zLoadingDialog.dismiss();
-                }
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
                         Toast.makeText(MyApplication.getContext(),"删除成功！",Toast.LENGTH_SHORT).show();
@@ -477,9 +474,6 @@ public class RetrofitUtil{
 
             @Override
             public void onFailure(Call<ResponseModel> call,Throwable t){
-                if(zLoadingDialog!=null){
-                    zLoadingDialog.dismiss();
-                }
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
@@ -549,6 +543,7 @@ public class RetrofitUtil{
                         }else{
                             if(lostListRequest.getPage().equals("1")){
                                 LostFragment.lostData.clear();
+                                Log.d("debug","onResponse: 清空！！！！！！！！！！！！！！！！！！！！！！");
                             }
                             for(LostInfo i:response.body().getData()){
                                 LostFragment.lostData.add(i);
@@ -598,6 +593,29 @@ public class RetrofitUtil{
                 if(zLoadingDialog!=null){
                     zLoadingDialog.dismiss();
                 }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求删除帖子
+    public static void postDeleteLost(final DeletePostRequest deletePostRequest){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postDeleteLost(deletePostRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });

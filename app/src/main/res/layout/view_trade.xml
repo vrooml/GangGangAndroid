@@ -50,7 +50,7 @@
                 <TextView
                         android:id="@+id/trade_content"
                         android:text="详情"
-                        android:textSize="12dp"
+                        android:textSize="14dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_below="@id/trade_fineness"
                         android:layout_marginTop="8dp"
@@ -84,7 +84,7 @@
                         android:layout_above="@id/trade_post_time_2"
                         android:layout_alignParentRight="true"
                         android:text="2019-8-21"
-                        android:textSize="8dp"
+                        android:textSize="10dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -92,8 +92,8 @@
                         android:id="@+id/trade_post_time_2"
                         android:layout_alignBottom="@id/trade_price_prefix"
                         android:layout_alignParentRight="true"
-                        android:text="12:15:00"
-                        android:textSize="8dp"
+                        android:text="12:15"
+                        android:textSize="10dp"
                         android:textColor="@color/qmui_config_color_gray_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

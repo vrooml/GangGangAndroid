@@ -88,6 +88,10 @@ public class TradeDetailActivity extends AppCompatActivity{
                     })
                     .isAutoPlay(false)
                     .start();
+        }else{
+            banner.setImageLoader(new GlideImageLoader())
+                    .isAutoPlay(false)
+                    .start();
         }
     }
 
