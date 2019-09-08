@@ -1,9 +1,15 @@
-package com.example.huge.fzugang.CarpoolBlock.ToJSON;
+package com.example.huge.fzugang.RetrofitStuff;
 
-public class CarpoolListPost {
+public class CarpoolListRequest{
     private String token;
     private String page;
     private String num;
+
+    public CarpoolListRequest(String token,String page,String num){
+        this.token=token;
+        this.page=page;
+        this.num=num;
+    }
 
     public String getToken() {
         return token;

@@ -9,9 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.MyPostActivity;
 import com.example.huge.fzugang.R;
 import com.example.huge.fzugang.RetrofitStuff.DeletePostRequest;
+import com.example.huge.fzugang.Utils.MyPopup;
 import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import razerdp.basepopup.QuickPopupBuilder;
@@ -68,6 +71,9 @@ public class LostListAdapter extends BaseAdapter{
             viewHolder=(ViewHolder)convertView.getTag();
         }
 
+        if(item.getPictureUrls()!=null){
+            Glide.with(context).load(item.getPictureUrls().get(0)).centerCrop().into(viewHolder.postImage);
+        }
         viewHolder.titie.setText(item.getTitle());
         viewHolder.lostPlace.setText(item.getLostPlace());
         viewHolder.lostTime.setText(item.getLostTime());
@@ -85,21 +91,21 @@ public class LostListAdapter extends BaseAdapter{
 
         //长按弹出删除帖子
         if(context.getClass().equals(MyPostActivity.class)){
+            ViewHolder finalViewHolder=viewHolder;
             viewHolder.postLayout.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
                 public boolean onLongClick(View v){
-                    QuickPopupBuilder.with(getContext())
-                            .contentView(R.layout.popup_layout)
-                            .config(new QuickPopupConfig()
-                                    .gravity(Gravity.CENTER_VERTICAL)
-                                    .withClick(R.id.delete_item,new View.OnClickListener(){
-                                        @Override
-                                        public void onClick(View v){
-                                            DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
-                                            RetrofitUtil.postDeleteLost(deletePostRequest);
-                                        }
-                                    }))
-                            .show(v);
+                    MyPopup popup=new MyPopup(context);
+                    popup.showPopupWindow(finalViewHolder.lostTime);
+                    popup.deleteButton.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
+                            RetrofitUtil.postDeleteLost(deletePostRequest);
+                            popup.dismiss();
+                            LostFragment.refreshLayout.autoRefresh();
+                        }
+                    });
                     return false;
                 }
             });

@@ -1,19 +1,28 @@
 package com.example.huge.fzugang.Utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.huge.fzugang.*;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolInfo;
+import com.example.huge.fzugang.RetrofitStuff.AddCarpoolRequest;
+import com.example.huge.fzugang.RetrofitStuff.CarpoolListRequest;
 import com.example.huge.fzugang.LostBlock.LostFragment;
 import com.example.huge.fzugang.LostBlock.LostInfo;
 import com.example.huge.fzugang.RetrofitStuff.*;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
 import com.example.huge.fzugang.TradeBlock.TradeInfo;
 import com.zyao89.view.zloading.ZLoadingDialog;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.huge.fzugang.Utils.constantUtil.FAILED;
-import static com.example.huge.fzugang.Utils.constantUtil.SUCCESS_CODE;
+import static com.example.huge.fzugang.MainActivity.slideAvatar;
+import static com.example.huge.fzugang.Utils.constantUtil.*;
 
 public class RetrofitUtil{
 
@@ -110,6 +119,11 @@ public class RetrofitUtil{
             @Override
             public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
                 if(response.code()==SUCCESS_CODE){
+                    //清除登录信息
+                    SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("FzuGang", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.commit();
                     Toast.makeText(MyApplication.getContext(),"退出登录成功",Toast.LENGTH_SHORT).show();
                     Intent reloginIntent=new Intent(startActivity,LoginActivity.class);
                     reloginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -263,14 +277,20 @@ public class RetrofitUtil{
                 }
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        RetrofitUtil.postUserInfo(response.body().getData().toString());
+                        RetrofitUtil.postUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"gender",changeInfoRequest.getGender());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",changeInfoRequest.getUsername());
-                        Toast.makeText(MyApplication.getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getContext(),"修改信息成功",Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(startActivity,MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity.startActivity(intent);
                         startActivity.finish();
+
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Log.d("debug","onResponse: ??????????????????????????????????");
                 }
             }
 
@@ -316,17 +336,18 @@ public class RetrofitUtil{
         });
     }
 
-
     //上传头像请求
-    public static void postUploadAvatar(String token,MultipartBody.Part file){
+    public static void postUploadAvatar(String token,MultipartBody.Part avatar){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel> call=request.postUploadAvatar(token,file);
+        Call<ResponseModel> call=request.postUploadAvatar(RequestBody.create(MediaType.parse("multipart/form-data"),token),avatar);
+        Log.d("debug","postUploadAvatar: token"+token);
         call.enqueue(new Callback<ResponseModel>(){
             @Override
             public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
                         Toast.makeText(MyApplication.getContext(),"上传头像成功",Toast.LENGTH_SHORT).show();
+                        String avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId");
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -339,6 +360,8 @@ public class RetrofitUtil{
             }
         });
     }
+
+
 /*
 二手交易
  */
@@ -479,6 +502,49 @@ public class RetrofitUtil{
         });
     }
 
+    //搜索帖子请求
+    public static void postSearchTrade(PostSearchRequest postSearchRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<TradeInfo[]>> call=request.postSearchTrade(postSearchRequest);
+        call.enqueue(new Callback<ResponseModel<TradeInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<TradeInfo[]>> call,Response<ResponseModel<TradeInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(postSearchRequest.getPage().equals("1")){
+                                SearchActivity.tradeData.clear();
+                            }
+                            for(TradeInfo i:response.body().getData()){
+                                SearchActivity.tradeData.add(i);
+                                Log.d("debug","tradeData"+i.getTitle());
+                            }
+                            SearchActivity.tradeListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<TradeInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
 
 /*
@@ -499,6 +565,7 @@ public class RetrofitUtil{
                     if(response.body().getCode()==SUCCESS_CODE){
                         if(response.body().getData().length==0){
                             Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                            LostFragment.lostListAdapter.notifyDataSetChanged();
                         }else{
                             if(lostListRequest.getPage().equals("1")){
                                 LostFragment.lostData.clear();
@@ -620,4 +687,230 @@ public class RetrofitUtil{
             }
         });
     }
+
+    //搜索帖子请求
+    public static void postSearchLost(PostSearchRequest postSearchRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<LostInfo[]>> call=request.postSearchLost(postSearchRequest);
+        call.enqueue(new Callback<ResponseModel<LostInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<LostInfo[]>> call,Response<ResponseModel<LostInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(postSearchRequest.getPage().equals("1")){
+                                SearchActivity.lostData.clear();
+                            }
+                            for(LostInfo i:response.body().getData()){
+                                SearchActivity.lostData.add(i);
+                            }
+                            SearchActivity.lostListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<LostInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+/*
+拼车服务
+ */
+
+    //请求拼车服务帖子列表
+    public static void postCarpoolList(final CarpoolListRequest carpoolListRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<CarpoolInfo[]>> call=request.postCarpoolList(carpoolListRequest);
+        call.enqueue(new Callback<ResponseModel<CarpoolInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<CarpoolInfo[]>> call,Response<ResponseModel<CarpoolInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(carpoolListRequest.getPage().equals("1")){
+                                CarpoolFragment.carpoolData.clear();
+                            }
+                            for(CarpoolInfo i:response.body().getData()){
+                                CarpoolFragment.carpoolData.add(i);
+                            }
+                            CarpoolFragment.carpoolListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<CarpoolInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求我的拼车服务帖子列表
+    public static void postMyCarpoolList(final CarpoolListRequest carpoolListRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<CarpoolInfo[]>> call=request.postMyCarpoolList(carpoolListRequest);
+        call.enqueue(new Callback<ResponseModel<CarpoolInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<CarpoolInfo[]>> call,Response<ResponseModel<CarpoolInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(carpoolListRequest.getPage().equals("1")){
+                                CarpoolFragment.carpoolData.clear();
+                                Log.d("debug","onResponse: 清空！！！！！！！！！！！！！！！！！！！！！！");
+                            }
+                            for(CarpoolInfo i:response.body().getData()){
+                                CarpoolFragment.carpoolData.add(i);
+                            }
+                            CarpoolFragment.carpoolListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<CarpoolInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求发布帖子
+    public static void postAddCarpool(final Activity startActivity,AddCarpoolRequest addCarpoolRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postAddCarpool(addCarpoolRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"发布成功！",Toast.LENGTH_SHORT).show();
+                        startActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求删除帖子
+    public static void postDeleteCarpool(final DeletePostRequest deletePostRequest){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postDeleteCarpool(deletePostRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //搜索帖子请求
+    public static void postSearchCarpool(PostSearchRequest postSearchRequest,final ZLoadingDialog zLoadingDialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<CarpoolInfo[]>> call=request.postSearchCarpool(postSearchRequest);
+        call.enqueue(new Callback<ResponseModel<CarpoolInfo[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<CarpoolInfo[]>> call,Response<ResponseModel<CarpoolInfo[]>> response){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        if(response.body().getData().length==0){
+                            Toast.makeText(MyApplication.getContext(),"没有更多发布了",Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(postSearchRequest.getPage().equals("1")){
+                                SearchActivity.carpoolData.clear();
+                            }
+                            for(CarpoolInfo i:response.body().getData()){
+                                SearchActivity.carpoolData.add(i);
+                            }
+                            SearchActivity.carpoolListAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MyApplication.getContext(),"服务器出了点小问题",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<CarpoolInfo[]>> call,Throwable t){
+                if(zLoadingDialog!=null){
+                    zLoadingDialog.dismiss();
+                }
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
 }

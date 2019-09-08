@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.huge.fzugang">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.huge.fzugang">
     <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 允许应用程序联网，以便向我们的服务器端发送数据 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-feature android:name="android.hardware.camera"/>
 
@@ -26,14 +27,16 @@
             tools:ignore="GoogleAppIndexingWarning"
             tools:replace="label"
             tools:targetApi="n">
+        <activity android:name=".BaseActivity">
+        </activity>
         <activity android:name=".MyPostActivity">
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="PhotoPicker"
-            android:exported="false"
-            android:grantUriPermissions="true">
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="PhotoPicker"
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/photo_path"/>
@@ -49,32 +52,27 @@
         </activity>
         <activity android:name=".LostBlock.LostDetailActivity">
         </activity>
-        <activity android:name=".CarpoolBlock.CarpoolBasicAddActivity">
-        </activity>
-        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity">
+        <activity android:name=".CarpoolBlock.AddCarpoolActivity">
         </activity>
         <activity android:name=".CarpoolBlock.CarpoolDetailActivity">
         </activity>
-
         <activity
-            android:name=".WelcomeActivity"
-            android:icon="@drawable/logo"
-            android:label="Fzu帮"
-            android:roundIcon="@drawable/logo">
+                android:name=".WelcomeActivity"
+                android:icon="@drawable/logo"
+                android:label="Fzu帮"
+                android:roundIcon="@drawable/logo">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".PerfectionInfoActivity" />
-        <activity android:name=".CarpoolBlock.CarpoolBasicAddActivity"/>
-        <activity android:name=".CarpoolBlock.CarpoolDetailActivity"/>
-        <activity android:name=".CarpoolBlock.CarpoolContentAddActivity"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".ForgetPasswordActivity"/>
+        <activity android:name=".RegisterActivity"/>
+        <activity android:name=".PerfectionInfoActivity"/>
+        <activity android:name=".SearchActivity"/>
     </application>
 
 </manifest>

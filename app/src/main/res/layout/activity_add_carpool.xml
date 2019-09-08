@@ -29,7 +29,7 @@
                     android:singleLine="true"
                     android:layout_gravity="center"
                     android:ellipsize="end"
-                    android:text="发布宝贝"
+                    android:text="发布拼车"
                     android:textColor="@color/qmui_config_color_white"
                     android:textSize="18sp" />
 
@@ -37,7 +37,7 @@
         </android.support.v7.widget.Toolbar>
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/add_lost_post_button"
+                android:id="@+id/add_carpool_post_button"
                 android:layout_width="60sp"
                 android:layout_height="30sp"
                 android:text="发布"
@@ -60,52 +60,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-
-            <android.support.design.widget.TextInputLayout
-                    android:id="@+id/add_trade_title"
-                    app:errorEnabled="false"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="8sp"
-                    android:layout_marginRight="8sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                        android:padding="12dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="宝贝标题"
-                        android:textSize="14dp"
-                        android:background="@drawable/edittext_background"
-                        android:maxLines="2" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                    android:id="@+id/add_trade_content"
-                    app:errorEnabled="false"
-                    android:layout_below="@id/add_trade_title"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="8sp"
-                    android:layout_marginRight="8sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                        android:padding="12dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="宝贝详情描述（出手原因、购买方式、包装等）"
-                        android:textSize="14dp"
-                        android:gravity="left"
-                        android:background="@drawable/edittext_background"
-                        android:minLines="10" />
-            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
-                    android:id="@+id/add_trade_other_layout"
+                    android:id="@+id/add_carpool_place_layout"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,32 +78,30 @@
                     android:layout_below="@id/add_trade_content">
 
                 <android.support.design.widget.TextInputLayout
-                        android:id="@+id/add_trade_price"
+                        android:id="@+id/add_carpool_start"
                         app:errorEnabled="false"
                         android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_marginRight="20sp">
                     <EditText
-                            android:hint="价格"
+                            android:hint="出发地"
                             android:padding="12dp"
                             android:maxLines="1"
-                            android:maxLength="7"
                             android:textSize="14dp"
-                            android:inputType="number|numberDecimal"
                             android:background="@drawable/edittext_background"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                        android:id="@+id/add_trade_fineness"
+                        android:id="@+id/add_carpool_destination"
                         app:errorEnabled="false"
                         android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1">
                     <EditText
-                            android:hint="成色（XX新）"
+                            android:hint="目的地"
                             android:padding="12dp"
                             android:textSize="14dp"
                             android:maxLines="1"
@@ -151,14 +112,39 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
+            <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+                    android:id="@+id/add_carpool_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
             <android.support.design.widget.TextInputLayout
-                    android:id="@+id/add_trade_contact"
+                    android:id="@+id/add_carpool_price"
                     app:errorEnabled="false"
                     app:boxBackgroundMode="none"
                     app:boxBackgroundColor="@color/qmui_config_color_white"
                     android:layout_marginLeft="8sp"
                     android:layout_marginRight="8sp"
-                    android:layout_below="@id/add_trade_other_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <EditText
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="拼车价格"
+                        android:inputType="number"
+                        android:textSize="14dp"
+                        android:background="@drawable/edittext_background"
+                        android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/add_carpool_contact"
+                    app:errorEnabled="false"
+                    app:boxBackgroundMode="none"
+                    app:boxBackgroundColor="@color/qmui_config_color_white"
+                    android:layout_marginLeft="8sp"
+                    android:layout_marginRight="8sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <EditText
@@ -171,20 +157,28 @@
                         android:maxLines="2" />
             </android.support.design.widget.TextInputLayout>
 
-            <GridView
-                    android:id="@+id/add_trade_pick_picture"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/add_carpool_content"
+                    app:errorEnabled="false"
+                    app:boxBackgroundMode="none"
+                    app:boxBackgroundColor="@color/qmui_config_color_white"
+                    android:layout_marginLeft="8sp"
+                    android:layout_marginRight="8sp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:numColumns="5"
-                    android:columnWidth="30dp"
-                    android:layout_below="@id/add_trade_contact">
-            </GridView>
+                    android:layout_height="wrap_content">
+                <EditText
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="拼车详情（拼车方式、途径、支付方式）"
+                        android:textSize="14dp"
+                        android:gravity="left"
+                        android:background="@drawable/edittext_background"
+                        android:minLines="4" />
+            </android.support.design.widget.TextInputLayout>
 
-        </RelativeLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

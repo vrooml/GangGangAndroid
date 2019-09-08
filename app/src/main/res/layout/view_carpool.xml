@@ -1,0 +1,173 @@
+<www.linwg.org.lib.LCardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cornerRadius="8dp"
+    app:shadowSize="10dp"
+    app:shadowFluidShape="linear"
+    app:shadowStartAlpha="30"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--最外层总体线性布局-->
+    <RelativeLayout
+            android:id="@+id/carpool_post_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+            android:padding="6dp">
+
+        <!--基本信息线性布局-->
+        <LinearLayout
+                android:id="@+id/carpool_trip_info"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+
+            <TextView
+                android:id="@+id/carpool_start"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="出发地"/>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                            android:id="@+id/carpool_depart_date"
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2019.8.29"
+                            android:textSize="14sp"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginLeft="8dp"
+                            app:layout_constraintBottom_toTopOf="@+id/carpool_card_view_arrow"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <ImageView
+                            android:id="@+id/carpool_card_view_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="10dp"
+                            android:layout_below="@+id/carpool_depart_date"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:scaleType="center"
+                            android:background="@drawable/point_arrow"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                            android:id="@+id/carpool_depart_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:text="8:30"
+                            app:layout_constraintTop_toBottomOf="@+id/carpool_card_view_arrow"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginRight="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/carpool_destination"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="目的地"/>
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/carpool_num_of_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/carpool_trip_info"
+            android:layout_marginTop="12dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="14dp"
+            android:textColor="@color/qmui_config_color_blue"
+            android:text="待拼4人"/>
+
+
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/carpool_user_avatar"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/avatar_boy"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/qmui_config_color_blue"/>
+        <TextView
+            android:id="@+id/carpool_user_name"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/carpool_user_avatar"
+            android:layout_alignBottom="@id/carpool_user_avatar"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户名"/>
+
+        <TextView
+                android:layout_toLeftOf="@+id/carpool_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                android:textColor="#EB1111"
+                android:layout_alignBottom="@id/carpool_price"
+                android:layout_marginBottom="3dp"
+                android:text="约￥ "/>
+
+        <TextView
+                android:id="@+id/carpool_price"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#EB1111"
+                android:textStyle="bold"
+                android:text="20"/>
+    </RelativeLayout>
+
+</www.linwg.org.lib.LCardView>
+

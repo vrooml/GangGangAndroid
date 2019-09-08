@@ -3,10 +3,17 @@ package com.example.huge.fzugang.Utils;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.Button;
+import android.widget.TextView;
 import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.RetrofitStuff.DeletePostRequest;
 import razerdp.basepopup.BasePopupWindow;
 
+import static com.example.huge.fzugang.MyApplication.getContext;
+
 public class MyPopup extends BasePopupWindow{
+    public TextView deleteButton;
+
     public MyPopup(Context context) {
         super(context);
     }
@@ -15,7 +22,9 @@ public class MyPopup extends BasePopupWindow{
     // 为了让库更加准确的做出适配，强烈建议使用createPopupById()进行inflate
     @Override
     public View onCreateContentView() {
-        return createPopupById(R.layout.popup_layout);
+        View view=createPopupById(R.layout.popup_layout);
+        deleteButton=view.findViewById(R.id.delete_item);
+        return view;
     }
 
     // 以下为可选代码（非必须实现）

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +15,7 @@ import android.widget.GridView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.huge.fzugang.AddPictureGridViewAdapter;
+import com.example.huge.fzugang.BaseActivity;
 import com.example.huge.fzugang.MyApplication;
 import com.example.huge.fzugang.R;
 import com.example.huge.fzugang.Utils.RetrofitUtil;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddTradeActivity extends AppCompatActivity{
+public class AddTradeActivity extends BaseActivity{
     @BindView(R.id.add_lost_post_button)
     Button addButton;
     @BindView(R.id.add_trade_title)
@@ -77,8 +77,7 @@ public class AddTradeActivity extends AppCompatActivity{
                         .choose(MimeType.allOf())
                         .countable(true)//true:选中后显示数字;false:选中后显示对号
                         .maxSelectable(9)//可选的最大数
-                        .capture(true)//选择照片时，是否显示拍照
-                        .captureStrategy(new CaptureStrategy(true,"PhotoPicker"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                        .capture(false)//选择照片时，是否显示拍照
                         .imageEngine(new GlideEngine())//图片加载引擎
                         .forResult(1);
             }

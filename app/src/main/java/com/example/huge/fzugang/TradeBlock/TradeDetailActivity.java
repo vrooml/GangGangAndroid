@@ -1,7 +1,6 @@
 package com.example.huge.fzugang.TradeBlock;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -10,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cc.shinichi.library.ImagePreview;
 import com.bumptech.glide.Glide;
+import com.example.huge.fzugang.BaseActivity;
 import com.example.huge.fzugang.R;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -18,7 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.huge.fzugang.Utils.constantUtil.BaseUrl;
 
-public class TradeDetailActivity extends AppCompatActivity{
+public class TradeDetailActivity extends BaseActivity{
     @BindView(R.id.trade_detail_banner)
     Banner banner;
     @BindView(R.id.trade_detail_title)

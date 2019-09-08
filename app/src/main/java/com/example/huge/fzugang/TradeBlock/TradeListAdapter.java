@@ -92,21 +92,21 @@ public class TradeListAdapter extends BaseAdapter{
 
         //长按弹出删除帖子
         if(context.getClass().equals(MyPostActivity.class)){
+            ViewHolder finalViewHolder=viewHolder;
             viewHolder.postLayout.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
                 public boolean onLongClick(View v){
-                    QuickPopupBuilder.with(getContext())
-                            .contentView(R.layout.popup_layout)
-                            .config(new QuickPopupConfig()
-                                    .gravity(Gravity.CENTER_VERTICAL)
-                                    .withClick(R.id.delete_item,new View.OnClickListener(){
-                                        @Override
-                                        public void onClick(View v){
-                                            DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
-                                            RetrofitUtil.postDeleteTrade(deletePostRequest);
-                                        }
-                                    }))
-                            .show(v);
+                    MyPopup popup=new MyPopup(context);
+                    popup.showPopupWindow(finalViewHolder.content);
+                    popup.deleteButton.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            DeletePostRequest deletePostRequest=new DeletePostRequest(item.getId(),SharedPreferencesUtil.getStoredMessage(getContext(),"token"));
+                            RetrofitUtil.postDeleteTrade(deletePostRequest);
+                            popup.dismiss();
+                            TradeFragment.refreshLayout.autoRefresh();
+                        }
+                    });
                     return false;
                 }
             });

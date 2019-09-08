@@ -28,8 +28,7 @@ import java.util.ArrayList;
 
 public class LostFragment extends Fragment{
     TextView title;
-    @BindView(R.id.lost_refresh_layout)
-    RefreshLayout refreshLayout;
+    public static RefreshLayout refreshLayout;
     @BindView(R.id.lost_list_view)
     ListView lostListView;
     public static LostListAdapter lostListAdapter;
@@ -37,10 +36,10 @@ public class LostFragment extends Fragment{
     Button foundListButton;
     @BindView(R.id.lost_list_button)
     Button lostListButton;
-    public static ArrayList<LostInfo> lostData=new ArrayList<LostInfo>();;
+    public static ArrayList<LostInfo> lostData=new ArrayList<LostInfo>();
     public static ZLoadingDialog zLoadingDialog;
     public static int page=1;
-    public static int classify=1;
+    public int classify;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -51,13 +50,14 @@ public class LostFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_lost,container,false);
         ButterKnife.bind(this,view);
-
+        refreshLayout=view.findViewById(R.id.lost_refresh_layout);
         init();
         initRefresh();
         return view;
     }
 
     private void init(){
+        classify=1;
         foundListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
         foundListButton.setTextSize(15);
         if(this.getActivity().getClass().equals(MainActivity.class)){
@@ -67,20 +67,6 @@ public class LostFragment extends Fragment{
         lostListAdapter=new LostListAdapter(this.getContext(),lostData);
         lostListView.setAdapter(lostListAdapter);
 
-        foundListButton.setOnClickListener(new View.OnClickListener(){
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v){
-                lostData.clear();
-                classify=1;
-                page=1;
-                foundListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
-                foundListButton.setTextSize(15);
-                lostListButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
-                lostListButton.setTextSize(12);
-                refreshLayout.autoRefresh();
-            }
-        });
 
         lostListButton.setOnClickListener(new View.OnClickListener(){
             @SuppressLint("ResourceAsColor")
@@ -97,6 +83,20 @@ public class LostFragment extends Fragment{
             }
         });
 
+        foundListButton.setOnClickListener(new View.OnClickListener(){
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v){
+                lostData.clear();
+                classify=1;
+                page=1;
+                foundListButton.setTextColor(getContext().getResources().getColor(R.color.basicColor));
+                foundListButton.setTextSize(15);
+                lostListButton.setTextColor(getContext().getResources().getColor(R.color.qmui_config_color_gray_3));
+                lostListButton.setTextSize(12);
+                refreshLayout.autoRefresh();
+            }
+        });
 
     }
 
@@ -105,7 +105,8 @@ public class LostFragment extends Fragment{
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page=1;
-                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10",String.valueOf(classify));
+                lostData.clear();
+                LostListRequest lostListRequest=new LostListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),"1","10",String.valueOf(classify));
                 if(LostFragment.this.getActivity().getClass().equals(MainActivity.class)){
                     RetrofitUtil.postLostList(lostListRequest,zLoadingDialog);
                 }else{

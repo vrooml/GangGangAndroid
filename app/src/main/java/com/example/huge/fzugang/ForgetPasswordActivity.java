@@ -1,13 +1,16 @@
 package com.example.huge.fzugang;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +25,7 @@ import com.zyao89.view.zloading.ZLoadingDialog;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class ForgetPasswordActivity extends AppCompatActivity{
+public class ForgetPasswordActivity extends BaseActivity{
     @BindView(R.id.forget_confirm_button)
     QMUIRoundButton forgetConfirmButton;
     @BindView(R.id.forget_phonenum_edit)
@@ -45,6 +48,18 @@ public class ForgetPasswordActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+
+        if (Build.VERSION.SDK_INT >= 21) {//21表示5.0
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor("#FFFFFF"));
+        } else if (Build.VERSION.SDK_INT >= 19) {//19表示4.4
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //虚拟键盘也透明
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         ButterKnife.bind(this);
         init();
     }
@@ -207,12 +222,7 @@ public class ForgetPasswordActivity extends AppCompatActivity{
                 if(forgetPhonenumEdit.getEditText().getText().length()!=11){
                     Toast.makeText(ForgetPasswordActivity.this,"手机号长度不正确",Toast.LENGTH_SHORT).show();
                 }else{
-                    String codeMsg=null;
-                    try{
-                        codeMsg=URLEncoder.encode("修改密码","utf-8");
-                    }catch(UnsupportedEncodingException e){
-                        e.printStackTrace();
-                    }
+                    String codeMsg="修改密码";
                     AuthCodeRequest authCodeRequest=new AuthCodeRequest(forgetPhonenumEdit.getEditText().getText().toString(),codeMsg);
                     RetrofitUtil.postAuthCode(authCodeRequest);
                     mCountDownTimer.start();

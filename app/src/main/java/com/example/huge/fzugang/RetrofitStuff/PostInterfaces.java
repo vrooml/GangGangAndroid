@@ -1,6 +1,6 @@
 package com.example.huge.fzugang.RetrofitStuff;
 
-import com.example.huge.fzugang.ForgetPasswordActivity;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolInfo;
 import com.example.huge.fzugang.LostBlock.LostInfo;
 import com.example.huge.fzugang.TradeBlock.TradeInfo;
 import okhttp3.MultipartBody;
@@ -51,7 +51,10 @@ public interface PostInterfaces{
     //请求上传头像
     @Multipart
     @POST("/fdb1.0.0/user/info/upload/avatar")
-    Call<ResponseModel> postUploadAvatar(@Part("token") String token,@Part() MultipartBody.Part avatar);
+    Call<ResponseModel> postUploadAvatar(@Part("token") RequestBody token,@Part() MultipartBody.Part avatar);
+
+
+
 
     //请求交易帖子列表
     @POST("/fdb1.0.0/trade/list")
@@ -71,12 +74,19 @@ public interface PostInterfaces{
     @POST("/fdb1.0.0/trade/del")
     Call<ResponseModel> postDeleteTrade(@Body DeletePostRequest deletePostRequest);
 
+    //请求搜索交易帖子
+    @POST("/fdb1.0.0/trade/search")
+    Call<ResponseModel<TradeInfo[]>> postSearchTrade(@Body PostSearchRequest postSearchRequest);
+
+
+
+
     //请求失物招领帖子列表
     @POST("/fdb1.0.0/lostProperty/list")
     Call<ResponseModel<LostInfo[]>> postLostList(@Body LostListRequest lostListRequest);
 
     //请求我的失物招领帖子列表
-    @POST("/fdb1.0.0/lostProperty/list")
+    @POST("/fdb1.0.0/lostProperty/me")
     Call<ResponseModel<LostInfo[]>> postMyLostList(@Body LostListRequest lostListRequest);
 
     //请求发布失物招领
@@ -88,5 +98,33 @@ public interface PostInterfaces{
     //请求删除交易帖子
     @POST("/fdb1.0.0/lostProperty/del")
     Call<ResponseModel> postDeleteLost(@Body DeletePostRequest deletePostRequest);
+
+    //请求搜索失物招领帖子
+    @POST("/fdb1.0.0/lostProperty/search")
+    Call<ResponseModel<LostInfo[]>> postSearchLost(@Body PostSearchRequest postSearchRequest);
+
+
+
+
+
+    //请求拼车服务帖子列表
+    @POST("/fdb1.0.0/carpooling/list")
+    Call<ResponseModel<CarpoolInfo[]>> postCarpoolList(@Body CarpoolListRequest carpoolListRequest);
+
+    //请求我的拼车服务帖子列表
+    @POST("/fdb1.0.0/carpooling/me")
+    Call<ResponseModel<CarpoolInfo[]>> postMyCarpoolList(@Body CarpoolListRequest carpoolListRequest);
+
+    //请求发布拼车服务
+    @POST("/fdb1.0.0/carpooling/add")
+    Call<ResponseModel> postAddCarpool(@Body AddCarpoolRequest addCarpoolRequest);
+
+    //请求删除拼车服务帖子
+    @POST("/fdb1.0.0/carpooling/del")
+    Call<ResponseModel> postDeleteCarpool(@Body DeletePostRequest deletePostRequest);
+
+    //请求搜索拼车帖子
+    @POST("/fdb1.0.0/carpooling/search")
+    Call<ResponseModel<CarpoolInfo[]>> postSearchCarpool(@Body PostSearchRequest postSearchRequest);
 
 }

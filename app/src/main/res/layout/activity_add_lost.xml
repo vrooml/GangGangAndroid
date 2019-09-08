@@ -16,7 +16,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 android:gravity="center"
                 android:background="@color/basicColor"
                 app:contentInsetStart="0dp"
@@ -30,7 +29,7 @@
                     android:singleLine="true"
                     android:layout_gravity="center"
                     android:ellipsize="end"
-                    android:text="发布宝贝"
+                    android:text="发布失物招领"
                     android:textColor="@color/qmui_config_color_white"
                     android:textSize="18sp" />
 
@@ -57,146 +56,152 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-            android:id="@+id/add_lost_choose_classify"
-            android:orientation="horizontal"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="40sp">
-        <Button
-                android:id="@+id/found_classify_button"
-                android:text="拾取失物"
-                android:textSize="12sp"
-                android:textColor="@color/qmui_config_color_gray_3"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-        <Button
-                android:id="@+id/lost_classify_button"
-                android:text="寻找失物"
-                android:textSize="12sp"
-                android:textColor="@color/qmui_config_color_gray_3"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-    </LinearLayout>
-
-    <View
-            android:background="@color/qmui_config_color_gray_8"
-            android:layout_width="match_parent"
-            android:layout_height="1sp"/>
-
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_lost_title"
-                app:errorEnabled="true"
-                android:layout_marginLeft="8sp"
-                android:layout_marginRight="8sp"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <EditText
-                    android:padding="12dp"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                    android:id="@+id/add_lost_choose_classify"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="标题"
-                    android:textSize="14dp"
-                    android:background="@drawable/edittext_background"
-                    android:maxLines="2" />
-        </android.support.design.widget.TextInputLayout>
+                    android:layout_height="40sp">
+                <Button
+                        android:id="@+id/found_classify_button"
+                        android:text="拾取失物"
+                        android:textSize="12sp"
+                        android:textColor="@color/qmui_config_color_gray_3"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                <Button
+                        android:id="@+id/lost_classify_button"
+                        android:text="寻找失物"
+                        android:textSize="12sp"
+                        android:textColor="@color/qmui_config_color_gray_3"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+            </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_lost_content"
-                app:errorEnabled="true"
-                android:layout_below="@id/add_lost_title"
-                android:layout_marginLeft="8sp"
-                android:layout_marginRight="8sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <EditText
-                    android:padding="12dp"
+            <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:hint="失物详情描述（物品外观、特征等）"
-                    android:gravity="left"
-                    android:background="@drawable/edittext_background"
-                    android:minLines="6" />
-        </android.support.design.widget.TextInputLayout>
+                    android:layout_height="match_parent">
 
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_lost_place"
-                app:errorEnabled="true"
-                android:layout_below="@id/add_lost_content"
-                android:layout_marginLeft="8sp"
-                android:layout_marginRight="8sp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent">
-            <EditText
-                    android:hint="丢失/拾到地点"
-                    android:padding="12dp"
-                    android:maxLines="1"
-                    android:textSize="14dp"
-                    android:background="@drawable/edittext_background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_lost_time"
-                app:errorEnabled="true"
-                android:layout_below="@id/add_lost_place"
-                android:layout_marginLeft="8sp"
-                android:layout_marginRight="8sp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent">
-            <EditText
-                    android:hint="丢失/拾到时间"
-                    android:padding="12dp"
-                    android:maxLines="1"
-                    android:textSize="14dp"
-                    android:background="@drawable/edittext_background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/add_lost_contact"
-                app:errorEnabled="true"
-                android:layout_marginLeft="8sp"
-                android:layout_marginRight="8sp"
-                android:layout_below="@id/add_lost_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <EditText
-                    android:padding="12dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:hint="联系方式（QQ、邮箱、电话）"
-                    android:background="@drawable/edittext_background"
-                    android:maxLines="2" />
-        </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_lost_title"
+                        app:errorEnabled="true"
+                        android:layout_marginLeft="8sp"
+                        android:layout_marginRight="8sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <EditText
+                            android:padding="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="标题"
+                            android:textSize="14dp"
+                            android:background="@drawable/edittext_background"
+                            android:maxLines="2" />
+                </android.support.design.widget.TextInputLayout>
 
-        <GridView
-                android:id="@+id/add_lost_pick_picture"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numColumns="5"
-                android:columnWidth="30dp"
-                android:layout_below="@id/add_lost_contact">
-        </GridView>
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_lost_content"
+                        app:errorEnabled="true"
+                        android:layout_below="@id/add_lost_title"
+                        android:layout_marginLeft="8sp"
+                        android:layout_marginRight="8sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <EditText
+                            android:padding="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:hint="失物详情描述（物品外观、特征等）"
+                            android:gravity="left"
+                            android:background="@drawable/edittext_background"
+                            android:minLines="6" />
+                </android.support.design.widget.TextInputLayout>
 
-    </RelativeLayout>
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_lost_place"
+                        app:errorEnabled="true"
+                        android:layout_below="@id/add_lost_content"
+                        android:layout_marginLeft="8sp"
+                        android:layout_marginRight="8sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+                    <EditText
+                            android:hint="丢失/拾到地点"
+                            android:padding="12dp"
+                            android:maxLines="1"
+                            android:textSize="14dp"
+                            android:background="@drawable/edittext_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_lost_time"
+                        app:errorEnabled="true"
+                        android:layout_below="@id/add_lost_place"
+                        android:layout_marginLeft="8sp"
+                        android:layout_marginRight="8sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+                    <EditText
+                            android:hint="丢失/拾到时间"
+                            android:padding="12dp"
+                            android:maxLines="1"
+                            android:textSize="14dp"
+                            android:background="@drawable/edittext_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_lost_contact"
+                        app:errorEnabled="true"
+                        android:layout_marginLeft="8sp"
+                        android:layout_marginRight="8sp"
+                        android:layout_below="@id/add_lost_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <EditText
+                            android:padding="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:hint="联系方式（QQ、邮箱、电话）"
+                            android:background="@drawable/edittext_background"
+                            android:maxLines="2" />
+                </android.support.design.widget.TextInputLayout>
+
+                <GridView
+                        android:id="@+id/add_lost_pick_picture"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:numColumns="5"
+                        android:columnWidth="30dp"
+                        android:layout_below="@id/add_lost_contact">
+                </GridView>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

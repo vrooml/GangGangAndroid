@@ -2,13 +2,13 @@ package com.example.huge.fzugang.LostBlock;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cc.shinichi.library.ImagePreview;
 import com.bumptech.glide.Glide;
+import com.example.huge.fzugang.BaseActivity;
 import com.example.huge.fzugang.R;
 import com.example.huge.fzugang.TradeBlock.TradeDetailActivity;
 import com.youth.banner.Banner;
@@ -18,7 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.huge.fzugang.Utils.constantUtil.BaseUrl;
 
-public class LostDetailActivity extends AppCompatActivity{
+public class LostDetailActivity extends BaseActivity{
     @BindView(R.id.lost_detail_banner)
     Banner banner;
     @BindView(R.id.lost_detail_title)

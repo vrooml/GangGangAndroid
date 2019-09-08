@@ -12,7 +12,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:gravity="center"
             android:background="@color/basicColor"
             app:contentInsetStart="0dp"
@@ -158,19 +157,19 @@
                 <TextView
                         android:id="@+id/trade_detail_username"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="12sp"
+                        android:layout_marginTop="6sp"
                         android:text="用户名"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:layout_toRightOf="@id/trade_detail_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/trade_detail_contact_prefix"
                         android:text="联系方式："
-                        android:textSize="15sp"
-                        android:layout_marginTop="6sp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@id/trade_detail_avatar"
+                        android:textSize="12sp"
+                        android:layout_toRightOf="@id/trade_detail_avatar"
+                        android:layout_marginTop="2sp"
+                        android:layout_below="@id/trade_detail_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
@@ -179,7 +178,16 @@
                         android:layout_alignTop="@id/trade_detail_contact_prefix"
                         android:layout_toRightOf="@id/trade_detail_contact_prefix"
                         android:text="782870819@qq.com"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:text="发布于："
+                        android:textSize="13sp"
+                        android:textColor="@color/qmui_config_color_gray_5"
+                        android:layout_toLeftOf="@id/trade_detail_post_date"
+                        android:layout_alignBaseline="@id/trade_detail_post_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView

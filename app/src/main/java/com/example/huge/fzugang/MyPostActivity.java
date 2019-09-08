@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,7 +15,7 @@ import com.example.huge.fzugang.TradeBlock.TradeFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostActivity extends AppCompatActivity{
+public class MyPostActivity extends BaseActivity{
     @BindView(R.id.my_post_tab_layout)
     TabLayout myPostTablayout;
     @BindView(R.id.my_post_view_pager)

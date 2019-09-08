@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/qmui_config_color_white"
-            app:srlPrimaryColor="#9EBCEB"
+            app:srlPrimaryColor="@color/basicColor"
             app:srlAccentColor="@android:color/white"
             app:srlEnablePreviewInEditMode="true"
             app:srlHeaderHeight="100dp"

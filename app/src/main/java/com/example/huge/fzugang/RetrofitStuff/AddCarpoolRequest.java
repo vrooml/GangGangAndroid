@@ -1,16 +1,29 @@
-package com.example.huge.fzugang.CarpoolBlock.ToJSON;
+package com.example.huge.fzugang.RetrofitStuff;
 
 import java.io.Serializable;
 
-public final class CarpoolReleasePost implements Serializable {
+public final class AddCarpoolRequest{
     public String token;
-    public String content;
-    public String destination;
     public String date;
     public String time;
+    public String content;
+    public String destination;
     public String meetPlace;
     public String price;
     public String numOfPeople;
+    public String contact;
+
+    public AddCarpoolRequest(String token,String date,String time,String content,String destination,String meetPlace,String price,String numOfPeople,String contact){
+        this.token=token;
+        this.date=date;
+        this.time=time;
+        this.content=content;
+        this.destination=destination;
+        this.meetPlace=meetPlace;
+        this.price=price;
+        this.numOfPeople=numOfPeople;
+        this.contact=contact;
+    }
 
     public String getToken() {
         return token;
@@ -76,8 +89,11 @@ public final class CarpoolReleasePost implements Serializable {
         this.numOfPeople = numOfPeople;
     }
 
-    public boolean isExeptForContent(){
-        return destination!=null&&meetPlace!=null&&price!=null&&numOfPeople!=null
-                &&date!=null&&time!=null;
+    public String getContact(){
+        return contact;
+    }
+
+    public void setContact(String contact){
+        this.contact=contact;
     }
 }

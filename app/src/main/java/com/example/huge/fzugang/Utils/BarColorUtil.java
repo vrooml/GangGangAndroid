@@ -18,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class BarcolorUtil{
+public class BarColorUtil{
     public final static int TYPE_MIUI = 0;
     public final static int TYPE_FLYME = 1;
     public final static int TYPE_M = 3;//6.0

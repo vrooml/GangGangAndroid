@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,6 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,7 +21,8 @@ import android.view.*;
 import android.widget.*;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
-import com.example.huge.fzugang.CarpoolBlock.CarpoolBasicAddActivity;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.huge.fzugang.CarpoolBlock.AddCarpoolActivity;
 import com.example.huge.fzugang.CarpoolBlock.CarpoolFragment;
 import com.example.huge.fzugang.DeliveryBlock.DeliveryFragment;
 import com.example.huge.fzugang.LostBlock.AddLostActivity;
@@ -28,6 +30,7 @@ import com.example.huge.fzugang.LostBlock.LostFragment;
 import com.example.huge.fzugang.RetrofitStuff.SignOutRequest;
 import com.example.huge.fzugang.TradeBlock.AddTradeActivity;
 import com.example.huge.fzugang.TradeBlock.TradeFragment;
+import com.example.huge.fzugang.Utils.BarColorUtil;
 import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,9 +39,9 @@ import java.util.List;
 
 import static com.example.huge.fzugang.Utils.constantUtil.BaseUrl;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
     private View headerview;
-    private CircleImageView slideAvatar;
+    public static CircleImageView slideAvatar;
     private TextView slideUsername;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
         init();
         initFragmentTabHost();
 
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //设置侧滑用户信息
         try{
             avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId");
-            Glide.with(MainActivity.this).load(avatarUrl).into(slideAvatar);
+            Glide.with(MainActivity.this).load(avatarUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(slideAvatar);
             slideUsername.setText(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
         }catch(Exception e){
         }
@@ -122,6 +126,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view){
                 drawerLayout.openDrawer(GravityCompat.START);
+                //设置侧滑用户信息
+                try{
+                    avatarUrl=BaseUrl+"/fdb1.0.0/user/download/avatar/id/"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId");
+                    Glide.with(MainActivity.this).load(avatarUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(slideAvatar);
+                    slideUsername.setText(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
+                }catch(Exception e){
+                }
+
             }
         });
 
@@ -129,6 +141,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Glide.get(MainActivity.this).clearMemory();
+                new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        Glide.get(MainActivity.this).clearDiskCache();
+                    }
+                });
                 Intent intent=new Intent(MainActivity.this,PerfectionInfoActivity.class);
                 intent.putExtra("sourceClass",MainActivity.class);
                 startActivity(intent);
@@ -138,19 +157,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-//                if(getVisibleFragment() instanceof LostFragment){
-//                    Intent intent=new Intent(MainActivity.this,SearchLostActivity.class);
-//                    startActivity(intent);
-//                }else if(getVisibleFragment() instanceof DeliveryFragment){
+                if(getVisibleFragment() instanceof LostFragment){
+                    Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                    intent.putExtra("sourceFragment",0);
+                    startActivity(intent);
+                }
+//                else if(getVisibleFragment() instanceof DeliveryFragment){
 //                    Intent intent=new Intent(MainActivity.this,SearchDeliveryActivity.class);
 //                    startActivity(intent);
-//                }else if(getVisibleFragment() instanceof TradeFragment){
-//                    Intent intent=new Intent(MainActivity.this,SearchTradeActivity.class);
-//                    startActivity(intent);
-//                }else if(getVisibleFragment() instanceof CarpoolFragment){
-//                    Intent intent=new Intent(MainActivity.this,SearchCarpoolActivity.class);
-//                    startActivity(intent);
 //                }
+                else if(getVisibleFragment() instanceof TradeFragment){
+                    Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                    intent.putExtra("sourceFragment",1);
+                    startActivity(intent);
+                }else if(getVisibleFragment() instanceof CarpoolFragment){
+                    Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                    intent.putExtra("sourceFragment",2);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -170,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(intent);
                 }
                 else if(getVisibleFragment() instanceof CarpoolFragment){
-                    Intent intent=new Intent(MainActivity.this, CarpoolBasicAddActivity.class);
+                    Intent intent=new Intent(MainActivity.this, AddCarpoolActivity.class);
                     startActivity(intent);
                 }
             }
@@ -217,11 +241,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.sign_out_item:
-                //清除登录信息
-                SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("FzuGang", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.commit();
                 //发送退出登录请求
                 SignOutRequest signOutRequest=new SignOutRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"username"));
                 RetrofitUtil.postSignOut(MainActivity.this,signOutRequest);

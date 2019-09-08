@@ -11,7 +11,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             android:orientation="vertical"
             tools:context=".MainActivity">
 
@@ -27,7 +26,6 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
                         android:gravity="center"
                         app:contentInsetStart="0dp"
                         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -112,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true"
             app:headerLayout="@layout/slide_head_layout"
             app:menu="@menu/slide_menu">
     </android.support.design.widget.NavigationView>

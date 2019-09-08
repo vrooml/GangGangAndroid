@@ -1,7 +1,6 @@
 package com.example.huge.fzugang;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,21 +9,24 @@ import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolListAdapter;
+import com.example.huge.fzugang.CarpoolBlock.CarpoolInfo;
 import com.example.huge.fzugang.LostBlock.LostInfo;
 import com.example.huge.fzugang.LostBlock.LostListAdapter;
-import com.example.huge.fzugang.MyApplication;
-import com.example.huge.fzugang.R;
+import com.example.huge.fzugang.RetrofitStuff.PostSearchRequest;
 import com.example.huge.fzugang.TradeBlock.TradeInfo;
 import com.example.huge.fzugang.TradeBlock.TradeListAdapter;
 import com.example.huge.fzugang.Utils.LoadingdialogUtil;
+import com.example.huge.fzugang.Utils.RetrofitUtil;
 import com.example.huge.fzugang.Utils.SharedPreferencesUtil;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zyao89.view.zloading.ZLoadingDialog;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity{
+public class SearchActivity extends BaseActivity{
    private Toolbar toolbar;
     public static ArrayList<TradeInfo> tradeData;
     public static ArrayList<LostInfo> lostData;
@@ -32,8 +34,9 @@ public class SearchActivity extends AppCompatActivity{
     public static ListView searchList;
     public static TradeListAdapter tradeListAdapter;
     public static LostListAdapter lostListAdapter;
-    public static CarpoolAdapter carpoolListAdapter;
-    public static
+    public static CarpoolListAdapter carpoolListAdapter;
+    @BindView(R.id.search_refresh_layout)
+    RefreshLayout refreshLayout;
     @BindView(R.id.search_editText)
     EditText searchEditText;
     @BindView(R.id.search_button)
@@ -58,9 +61,12 @@ public class SearchActivity extends AppCompatActivity{
         //获取来源版块
         block=Integer.parseInt(getIntent().getSerializableExtra("sourceFragment").toString());
         init();
+        initRefresh();
+
     }
 
     private void init(){
+        page=1;
         searchList=findViewById(R.id.search_listview);
         //设置标题
         if(block==0){
@@ -105,24 +111,65 @@ public class SearchActivity extends AppCompatActivity{
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
+                ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
                 if(keyWord.equals("")){
                     Toast.makeText(searchList.getContext(),"查询词不能为空",Toast.LENGTH_SHORT).show();
                 }else{
                     if(block==0){
-                        lostData.clear();
+                        PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                        RetrofitUtil.postSearchLost(postSearchRequest,zLoadingDialog);
                     }else if(block==1){
-                        tradeData.clear();
+                        PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                        RetrofitUtil.postSearchTrade(postSearchRequest,zLoadingDialog);
                     }else if(block==2){
-                        carpoolData.clear();
+                        PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                        RetrofitUtil.postSearchCarpool(postSearchRequest,zLoadingDialog);
                     }
-                    String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
-                    ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
-                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,keyWord,String.valueOf(classify),String.valueOf(page));
-//                    RetrofitUtil.postSearchPost(searchList.getContext(),postSearchRequest,data,zLoadingDialog);
                 }
             }
         });
     }
+
+    private void initRefresh(){
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
+                ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
+                if(block==0){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                    RetrofitUtil.postSearchLost(postSearchRequest,zLoadingDialog);
+                }else if(block==1){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                    RetrofitUtil.postSearchTrade(postSearchRequest,zLoadingDialog);
+                }else if(block==2){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(page),keyWord);
+                    RetrofitUtil.postSearchCarpool(postSearchRequest,zLoadingDialog);
+                }
+                refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                String token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
+                ZLoadingDialog zLoadingDialog=LoadingdialogUtil.getZLoadingDialog(searchList.getContext());
+                if(block==0){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(++page),keyWord);
+                    RetrofitUtil.postSearchLost(postSearchRequest,zLoadingDialog);
+                }else if(block==1){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(++page),keyWord);
+                    RetrofitUtil.postSearchTrade(postSearchRequest,zLoadingDialog);
+                }else if(block==2){
+                    PostSearchRequest postSearchRequest=new PostSearchRequest(token,String.valueOf(++page),keyWord);
+                    RetrofitUtil.postSearchCarpool(postSearchRequest,zLoadingDialog);
+                }
+                refreshlayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
 
     /**
      * 监听返回按键的事件处理
@@ -136,7 +183,6 @@ public class SearchActivity extends AppCompatActivity{
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             page=1;
-            tradeListAdapter=null;
             this.finish();
         }
 

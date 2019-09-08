@@ -28,8 +28,7 @@ import java.util.ArrayList;
 
 public class TradeFragment extends Fragment{
     TextView title;
-    @BindView(R.id.trade_refresh_layout)
-    RefreshLayout refreshLayout;
+    public static RefreshLayout refreshLayout;
     @BindView(R.id.trade_list_view)
     ListView tradeListView;
     public static TradeListAdapter tradeListAdapter;
@@ -46,6 +45,7 @@ public class TradeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_trade,container,false);
         ButterKnife.bind(this,view);
+        refreshLayout=view.findViewById(R.id.trade_refresh_layout);
         init();
         initRefresh();
         return view;
@@ -73,7 +73,8 @@ public class TradeFragment extends Fragment{
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page=1;
-                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),String.valueOf(page),"10");
+                tradeData.clear();
+                TradeListRequest tradeListRequest=new TradeListRequest(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),"1","10");
                 //根据调用位置判断请求方式
                 if(TradeFragment.this.getActivity().getClass().equals(MainActivity.class)){
                     RetrofitUtil.postTradeList(TradeFragment.this,tradeListRequest,zLoadingDialog);
